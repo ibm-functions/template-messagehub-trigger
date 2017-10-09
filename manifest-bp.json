@@ -1,0 +1,18 @@
+{
+  "_id": "6802d81ad56169c9ed8a53a6b000bab1",
+  "_rev": "7-94cafbe2f3db8b5d9448d1358ccc6efd",
+  "name": "New MessageHub Item",
+  "description": "When a messagehub feed has a new item added, log the change in the console.",
+  "long_description": "This blueprint will create an action and a trigger that will kick off that action.  The trigger is fired whenever there is a new item added to the messagehub instance and queue chosen when you create this blueprint.",
+  "url": "https://github.com/zachschultz/owbp-message-hub-trigger",
+  "runtime": {
+    "name": "Node.js 6",
+    "kind": "nodejs:6",
+    "type": "node"
+  },
+  "categories": [
+    "nodejs",
+    "messagehub",
+    "kafka"
+  ]
+}
