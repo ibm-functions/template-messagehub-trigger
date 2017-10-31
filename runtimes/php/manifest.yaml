@@ -15,7 +15,7 @@
 #   MESSAGEHUB_PASS
 #   KAFKA_TOPIC
 
-package:
+packages:
   $PACKAGE_NAME:
     version: 1.0
     license: Apache-2.0
