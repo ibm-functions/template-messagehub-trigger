@@ -1,3 +1,4 @@
+<?php
 function main(array $args) : array
 {
     if ((array_key_exists("messages", $args)) && !empty($args["messages"]) && array_key_exists("value", $args["messages"][0])) {

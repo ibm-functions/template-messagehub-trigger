@@ -1,7 +1,4 @@
 function main(params) {
-
-  console.log(params);
-
   return new Promise(function(resolve, reject) {
     if (!params.messages || !params.messages[0] || !params.messages[0].value) {
       reject("Invalid arguments. Must include 'messages' JSON array with 'value' field");
