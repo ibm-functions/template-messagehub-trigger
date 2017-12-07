@@ -34,7 +34,7 @@ class MessageHubTests extends TestHelpers
     val wsk = new Wsk()
 
     //set parameters for deploy tests
-    val nodejsfolder = "../runtimes/node/actions";
+    val nodejsfolder = "../runtimes/nodejs/actions";
     val phpfolder = "../runtimes/php/actions";
     val pythonfolder = "../runtimes/python/actions";
     val swiftfolder = "../runtimes/swift/actions";
@@ -47,7 +47,7 @@ class MessageHubTests extends TestHelpers
 
 
   /**
-    * Test the node "messageHub trigger" blueprint
+    * Test the nodejs "messageHub trigger" blueprint
     */
   it should "invoke process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
@@ -171,4 +171,3 @@ class MessageHubTests extends TestHelpers
     }
   }
 }
-

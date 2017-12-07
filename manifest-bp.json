@@ -8,7 +8,7 @@
   "runtime": {
     "name": "Node.js 6",
     "kind": "nodejs:6",
-    "type": "node"
+    "type": "nodejs"
   },
   "categories": [
     "nodejs",
