@@ -49,7 +49,8 @@ EDGE_HOST=$(grep '^edge.host=' $WHISKPROPS_FILE | cut -d'=' -f2)
 export OPENWHISK_HOME=$WHISKDIR
 
 # Install the package
- source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
+cd $DEPLOYDIR/packages
+source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
 
 # Test
 cd $ROOTDIR/blueprint-messagehub-trigger
