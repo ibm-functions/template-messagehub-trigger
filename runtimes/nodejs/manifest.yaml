@@ -33,7 +33,7 @@ packages:
         function: actions/process-message.js
     triggers:
       message-received-trigger:
-        source: openwhisk-messagehub/messageHubFeed
+        feed: openwhisk-messagehub/messageHubFeed
         inputs:
           isJSONData: true
           topic: $KAFKA_TOPIC

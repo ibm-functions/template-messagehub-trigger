@@ -34,7 +34,7 @@ packages:
         runtime: swift:3.1.1
     triggers:
       message-received-trigger:
-        source: openwhisk-messagehub/messageHubFeed
+        feed: openwhisk-messagehub/messageHubFeed
         inputs:
           isJSONData: true
           topic: $KAFKA_TOPIC
