@@ -39,7 +39,7 @@ class MessageHubTests extends TestHelpers
     val pythonfolder = "../runtimes/python/actions";
     val swiftfolder = "../runtimes/swift/actions";
 
-    behavior of "MessageHub Blueprint"
+    behavior of "MessageHub Template"
     val catsArray = Map("cats" -> JsArray(JsObject(
       "name" -> JsString("Kat"),
       "color" -> JsString("Red"))))
@@ -47,7 +47,7 @@ class MessageHubTests extends TestHelpers
 
 
   /**
-    * Test the nodejs "messageHub trigger" blueprint
+    * Test the nodejs "messageHub trigger" template
     */
   it should "invoke process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
@@ -79,7 +79,7 @@ class MessageHubTests extends TestHelpers
   }
 
   /**
-    * Test the python "messageHub trigger" blueprint
+    * Test the python "messageHub trigger" template
     */
   it should "invoke process-message.py and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
@@ -110,7 +110,7 @@ class MessageHubTests extends TestHelpers
   }
 
   /**
-    * Test the php "messageHub trigger" blueprint
+    * Test the php "messageHub trigger" template
     */
   it should "invoke process-message.php and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
@@ -141,7 +141,7 @@ class MessageHubTests extends TestHelpers
   }
 
   /**
-    * Test the swift "messageHub trigger" blueprint
+    * Test the swift "messageHub trigger" template
     */
   it should "invoke process-message.swift and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
