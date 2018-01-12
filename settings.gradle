@@ -8,7 +8,7 @@ include 'whisktests'; project(':whisktests').projectDir = new File(owDirectory, 
 
 include 'tests'
 
-rootProject.name = 'blueprint-messagehub-trigger'
+rootProject.name = 'template-messagehub-trigger'
 
 gradle.ext.scala = [
     version: '2.11.8',

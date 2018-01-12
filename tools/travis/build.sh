@@ -8,7 +8,7 @@ DEPLOYDIR="$ROOTDIR/packageDeploy"
 
 cd $WHISKDIR
 
-tools/build/scanCode.py $ROOTDIR
+tools/build/scanCode.py "$SCRIPTDIR/../.."
 
 # No point to continue with PRs, since encryption is on
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then exit 0; fi
@@ -53,5 +53,5 @@ cd $DEPLOYDIR/packages
 source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
 
 # Test
-cd $ROOTDIR/blueprint-messagehub-trigger
+cd $ROOTDIR/template-messagehub-trigger
 ./gradlew :tests:test
