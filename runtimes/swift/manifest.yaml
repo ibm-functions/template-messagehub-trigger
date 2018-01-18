@@ -6,8 +6,8 @@
 #   Package:  messagehub-trigger
 #   Action:   messagehub-trigger/process-message.js
 #   Sequence: messagehub-trigger/process-message-messagehub-sequence
-#   Trigger:  message-received-trigger
-#   Rule:     log-message-rule
+#   Trigger:  $TRIGGER_NAME
+#   Rule:     $RULE_NAME
 
 # This manifest file reads the following env. variables:
 #   KAFKA_BROKERS
@@ -33,12 +33,12 @@ packages:
         function: actions/process-message.swift
         runtime: swift:3.1.1
     triggers:
-      message-received-trigger:
+      $TRIGGER_NAME:
         feed: openwhisk-messagehub/messageHubFeed
         inputs:
           isJSONData: true
           topic: $KAFKA_TOPIC
     rules:
-        log-message-rule:
-          trigger: message-received-trigger
+        $RULE_NAME:
+          trigger: $TRIGGER_NAME
           action: process-message
