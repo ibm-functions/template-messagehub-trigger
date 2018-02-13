@@ -34,10 +34,11 @@ class MessageHubTests extends TestHelpers
     val wsk = new Wsk()
 
     //set parameters for deploy tests
-    val nodejsfolder = "../runtimes/nodejs/actions";
-    val phpfolder = "../runtimes/php/actions";
-    val pythonfolder = "../runtimes/python/actions";
-    val swiftfolder = "../runtimes/swift/actions";
+    val nodejs6folder = "../runtimes/nodejs-6/actions";
+    val nodejs8folder = "../runtimes/nodejs-8/actions";
+    val phpfolder = "../runtimes/php-7.1/actions";
+    val pythonfolder = "../runtimes/python-3/actions";
+    val swiftfolder = "../runtimes/swift-3.1.1/actions";
 
     behavior of "MessageHub Template"
     val catsArray = Map("cats" -> JsArray(JsObject(
@@ -47,12 +48,12 @@ class MessageHubTests extends TestHelpers
 
 
   /**
-    * Test the nodejs "messageHub trigger" template
+    * Test the nodejs 6 "messageHub trigger" template
     */
   it should "invoke process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
-    val file = Some(new File(nodejsfolder, "process-message.js").toString());
+    val file = Some(new File(nodejs6folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file)
     }
@@ -65,7 +66,39 @@ class MessageHubTests extends TestHelpers
   it should "invoke process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
-    val file = Some(new File(nodejsfolder, "process-message.js").toString());
+    val file = Some(new File(nodejs6folder, "process-message.js").toString());
+
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(name, file)
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name)) {
+      activation =>
+        activation.response.success shouldBe false
+        activation.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
+    }
+  }
+
+  /**
+    * Test the nodejs 8 "messageHub trigger" template
+    */
+  it should "invoke process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+
+    val name = "messageHubNode"
+    val file = Some(new File(nodejs8folder, "process-message.js").toString());
+    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+      action.create(name, file)
+    }
+
+    withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
+      _.response.result.get.toString should include regex """Red.*Kat"""
+    }
+  }
+
+  it should "invoke process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+
+    val name = "messageHubNode"
+    val file = Some(new File(nodejs8folder, "process-message.js").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file)
