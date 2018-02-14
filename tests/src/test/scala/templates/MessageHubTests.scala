@@ -50,7 +50,7 @@ class MessageHubTests extends TestHelpers
   /**
     * Test the nodejs 6 "messageHub trigger" template
     */
-  it should "invoke process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+  it should "invoke nodejs 6 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
@@ -63,7 +63,7 @@ class MessageHubTests extends TestHelpers
     }
   }
 
-  it should "invoke process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+  it should "invoke nodejs 6 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
@@ -82,7 +82,7 @@ class MessageHubTests extends TestHelpers
   /**
     * Test the nodejs 8 "messageHub trigger" template
     */
-  it should "invoke process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+  it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
@@ -95,7 +95,7 @@ class MessageHubTests extends TestHelpers
     }
   }
 
-  it should "invoke process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+  it should "invoke nodejs 8 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
