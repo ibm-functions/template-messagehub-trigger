@@ -31,7 +31,7 @@ packages:
     actions:
       process-message:
         function: actions/process-message.py
-        runtime: python:3
+        runtime: python-jessie:3
     triggers:
       $TRIGGER_NAME:
         feed: openwhisk-messagehub/messageHubFeed
