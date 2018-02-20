@@ -85,9 +85,10 @@ class MessageHubTests extends TestHelpers
   it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
+    val kind = Option("nodejs:8")
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind)
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -99,9 +100,10 @@ class MessageHubTests extends TestHelpers
 
     val name = "messageHubNode"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
+    val kind = Option("nodejs:8")
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind)
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
