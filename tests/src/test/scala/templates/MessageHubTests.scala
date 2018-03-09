@@ -88,7 +88,7 @@ class MessageHubTests extends TestHelpers
     val kind = Some("nodejs:8")
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind)
+      action.create(name, file, kind = Some("nodejs:8"))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -100,10 +100,9 @@ class MessageHubTests extends TestHelpers
 
     val name = "messageHubNode"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
-    val kind = Some("nodejs:8")
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind)
+      action.create(name, file, kind = Some("nodejs:8"))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
