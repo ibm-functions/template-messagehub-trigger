@@ -48,9 +48,17 @@ EDGE_HOST=$(grep '^edge.host=' $WHISKPROPS_FILE | cut -d'=' -f2)
 # Set Environment
 export OPENWHISK_HOME=$WHISKDIR
 
-# Install the package
-cd $DEPLOYDIR/packages
-source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
+# Place this template in correct location to be included in packageDeploy
+mkdir -p $PACKAGESDIR/preInstalled/ibm-functions
+cp -r $ROOTDIR/template-messagehub-trigger $PACKAGESDIR/preInstalled/ibm-functions/
+
+# Install the deploy package
+cd $PACKAGESDIR/packageDeploy/packages
+source $PACKAGESDIR/packageDeploy/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
+
+# Install fake cloudant package
+$WSK_CLI package create /whisk.system/messaging --apihost $EDGE_HOST --auth $AUTH_KEY --shared yes -i
+$WSK_CLI action create /whisk.system/messaging/messageHubFeed --copy /whisk.system/utils/echo --apihost $EDGE_HOST --auth $AUTH_KEY -i
 
 # Test
 cd $ROOTDIR/template-messagehub-trigger
