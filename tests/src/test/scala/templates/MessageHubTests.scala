@@ -27,6 +27,7 @@ import common.TestUtils.RunResult
 import com.jayway.restassured.RestAssured
 import com.jayway.restassured.config.SSLConfig
 import spray.json._
+import spray.json.DefaultJsonProtocol._
 
 @RunWith(classOf[JUnitRunner])
 class MessageHubTests extends TestHelpers
