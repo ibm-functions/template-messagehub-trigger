@@ -35,10 +35,10 @@ class MessageHubTests extends TestHelpers
 
     //set parameters for deploy tests
     val nodejs6folder = "../runtimes/nodejs-6/actions";
-    val nodejs8folder = "../runtimes/nodejs-8/actions";
-    val phpfolder = "../runtimes/php-7.1/actions";
-    val pythonfolder = "../runtimes/python-3.6.4/actions";
-    val swiftfolder = "../runtimes/swift-3.1.1/actions";
+    val nodejs8folder = "../runtimes/nodejs/actions";
+    val phpfolder = "../runtimes/php/actions";
+    val pythonfolder = "../runtimes/python/actions";
+    val swiftfolder = "../runtimes/swift/actions";
 
     behavior of "MessageHub Template"
     val catsArray = Map("cats" -> JsArray(JsObject(
@@ -85,9 +85,10 @@ class MessageHubTests extends TestHelpers
   it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
+    val kind = Some("nodejs:8")
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some("nodejs:8"))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -101,7 +102,7 @@ class MessageHubTests extends TestHelpers
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some("nodejs:8"))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
