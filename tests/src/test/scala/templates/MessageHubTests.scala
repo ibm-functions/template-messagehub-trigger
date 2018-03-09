@@ -26,7 +26,6 @@ import java.io._
 import common.TestUtils.RunResult
 import com.jayway.restassured.RestAssured
 import com.jayway.restassured.config.SSLConfig
-import spray.json.DefaultJsonProtocol._
 import spray.json._
 
 @RunWith(classOf[JUnitRunner])
@@ -36,6 +35,15 @@ class MessageHubTests extends TestHelpers
 
     implicit val wskprops = WskProps()
     val wsk = new Wsk()
+
+    // statuses for deployWeb
+    val successStatus = """"status":"success""""
+
+    val deployTestRepo = "https://github.com/ibm-functions/template-messagehub-trigger"
+    val messagehubActionPackage = "myPackage/process-message"
+    val fakeMessageHubAction = "openwhisk-messagehub/messageHubFeed"
+    val deployAction = "/whisk.system/deployWeb/wskdeploy"
+    val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
 
     //set parameters for deploy tests
     val node8RuntimePath = "runtimes/nodejs"
@@ -92,19 +100,19 @@ class MessageHubTests extends TestHelpers
         "wskAuth" -> JsString(wskprops.authKey)
       ), successStatus, 200);
 
-      withActivation(wsk.activation, wsk.action.invoke(slackReminderActionPackage)) {
+      withActivation(wsk.activation, wsk.action.invoke(messagehubActionPackage)) {
         _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
       }
 
-      withActivation(wsk.activation, wsk.action.invoke(fakeChangesAction, Map("message" -> "echo".toJson))) {
+      withActivation(wsk.activation, wsk.action.invoke(fakeMessageHubAction, Map("message" -> "echo".toJson))) {
         _.response.result.get.toString should include("echo")
       }
 
       val action = wsk.action.get("myPackage/process-change")
-      verifyAction(action, slackReminderActionPackage, nodejs8kind)
+      verifyAction(action, messagehubActionPackage, nodejs8kind)
 
       // clean up after test
-      wsk.action.delete(slackReminderActionPackage)
+      wsk.action.delete(fakeMessageHubAction)
     }
 
     val catsArray = Map("cats" -> JsArray(JsObject(
