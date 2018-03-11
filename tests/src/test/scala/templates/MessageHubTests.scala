@@ -313,7 +313,7 @@ class MessageHubTests extends TestHelpers
     val name = "messageHubNode"
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(nodejs6kind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -327,7 +327,7 @@ class MessageHubTests extends TestHelpers
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(nodejs6kind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
@@ -345,7 +345,7 @@ class MessageHubTests extends TestHelpers
     val name = "messageHubNode"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some("nodejs:8"))
+      action.create(name, file, kind = Some(nodejs8kind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -357,10 +357,9 @@ class MessageHubTests extends TestHelpers
 
     val name = "messageHubNode"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
-    val kind = Option("nodejs:8")
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some("nodejs:8"))
+      action.create(name, file, kind = Some(nodejs8kind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
@@ -378,7 +377,7 @@ class MessageHubTests extends TestHelpers
     val name = "messageHubPython"
     val file = Some(new File(pythonfolder, "process-message.py").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(pythonkind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -391,7 +390,7 @@ class MessageHubTests extends TestHelpers
     val file = Some(new File(pythonfolder, "process-message.py").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(pythonkind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
@@ -409,7 +408,7 @@ class MessageHubTests extends TestHelpers
     val name = "messageHubPhp"
     val file = Some(new File(phpfolder, "process-message.php").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(phpkind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -422,7 +421,7 @@ class MessageHubTests extends TestHelpers
     val file = Some(new File(phpfolder, "process-message.php").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(phpkind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
@@ -440,7 +439,7 @@ class MessageHubTests extends TestHelpers
     val name = "messageHubSwift"
     val file = Some(new File(swiftfolder, "process-message.swift").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(swiftkind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -454,7 +453,7 @@ class MessageHubTests extends TestHelpers
     val file = Some(new File(swiftfolder, "process-message.swift").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file)
+      action.create(name, file, kind = Some(swiftkind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {
