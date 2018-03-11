@@ -49,19 +49,19 @@ class MessageHubTests extends TestHelpers
     //set parameters for deploy tests
     val node8RuntimePath = "runtimes/nodejs"
     val nodejs8folder = "../runtimes/nodejs/actions";
-    val nodejs8kind = JsString("nodejs:8")
+    val nodejs8kind = "nodejs:8"
     val node6RuntimePath = "runtimes/nodejs-6"
     val nodejs6folder = "../runtimes/nodejs-6/actions";
-    val nodejs6kind = JsString("nodejs:6")
+    val nodejs6kind = "nodejs:6"
     val phpRuntimePath = "runtimes/php"
     val phpfolder = "../runtimes/php/actions";
-    val phpkind = JsString("php:7.1")
+    val phpkind = "php:7.1"
     val pythonRuntimePath = "runtimes/python"
     val pythonfolder = "../runtimes/python/actions";
-    val pythonkind = JsString("python-jessie:3")
+    val pythonkind = "python-jessie:3"
     val swiftRuntimePath = "runtimes/swift"
     val swiftfolder = "../runtimes/swift/actions";
-    val swiftkind = JsString("swift:3.1.1")
+    val swiftkind = "swift:3.1.1"
 
     behavior of "MessageHub Template"
 
@@ -102,7 +102,7 @@ class MessageHubTests extends TestHelpers
       verifyRuleList(rules, "myRule")
 
       val action = wsk.action.get(messagehubAction)
-      verifyAction(action, messagehubAction, nodejs8kind)
+      verifyAction(action, messagehubAction, JsString(nodejs8kind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
@@ -149,7 +149,7 @@ class MessageHubTests extends TestHelpers
       verifyRuleList(rules, "myRule")
 
       val action = wsk.action.get(messagehubAction)
-      verifyAction(action, messagehubAction, nodejs6kind)
+      verifyAction(action, messagehubAction, JsString(nodejs6kind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
@@ -196,7 +196,7 @@ class MessageHubTests extends TestHelpers
       verifyRuleList(rules, "myRule")
 
       val action = wsk.action.get(messagehubAction)
-      verifyAction(action, messagehubAction, phpkind)
+      verifyAction(action, messagehubAction, JsString(phpkind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
@@ -243,7 +243,7 @@ class MessageHubTests extends TestHelpers
       verifyRuleList(rules, "myRule")
 
       val action = wsk.action.get(messagehubAction)
-      verifyAction(action, messagehubAction, pythonkind)
+      verifyAction(action, messagehubAction, JsString(pythonkind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
@@ -290,7 +290,7 @@ class MessageHubTests extends TestHelpers
       verifyRuleList(rules, "myRule")
 
       val action = wsk.action.get(messagehubAction)
-      verifyAction(action, messagehubAction, swiftkind)
+      verifyAction(action, messagehubAction, JsString(swiftkind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
