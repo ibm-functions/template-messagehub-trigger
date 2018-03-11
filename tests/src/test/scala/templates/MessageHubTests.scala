@@ -107,6 +107,7 @@ class MessageHubTests extends TestHelpers
       // clean up after test
       wsk.action.delete(messagehubAction)
       wsk.pkg.delete("myPackage")
+      wsk.pkg.delete("openwhisk-messagehub")
       wsk.trigger.delete("myTrigger")
       wsk.rule.delete("myRule")
     }
@@ -153,6 +154,7 @@ class MessageHubTests extends TestHelpers
       // clean up after test
       wsk.action.delete(messagehubAction)
       wsk.pkg.delete("myPackage")
+      wsk.pkg.delete("openwhisk-messagehub")
       wsk.trigger.delete("myTrigger")
       wsk.rule.delete("myRule")
     }
@@ -199,6 +201,7 @@ class MessageHubTests extends TestHelpers
       // clean up after test
       wsk.action.delete(messagehubAction)
       wsk.pkg.delete("myPackage")
+      wsk.pkg.delete("openwhisk-messagehub")
       wsk.trigger.delete("myTrigger")
       wsk.rule.delete("myRule")
     }
@@ -245,6 +248,7 @@ class MessageHubTests extends TestHelpers
       // clean up after test
       wsk.action.delete(messagehubAction)
       wsk.pkg.delete("myPackage")
+      wsk.pkg.delete("openwhisk-messagehub")
       wsk.trigger.delete("myTrigger")
       wsk.rule.delete("myRule")
     }
@@ -291,6 +295,7 @@ class MessageHubTests extends TestHelpers
       // clean up after test
       wsk.action.delete(messagehubAction)
       wsk.pkg.delete("myPackage")
+      wsk.pkg.delete("openwhisk-messagehub")
       wsk.trigger.delete("myTrigger")
       wsk.rule.delete("myRule")
     }
