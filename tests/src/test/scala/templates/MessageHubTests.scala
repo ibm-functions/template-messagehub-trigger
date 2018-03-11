@@ -41,7 +41,7 @@ class MessageHubTests extends TestHelpers
     val successStatus = """"status":"success""""
 
     val deployTestRepo = "https://github.com/ibm-functions/template-messagehub-trigger"
-    val messagehubActionPackage = "myPackage/process-message"
+    val messagehubAction = "myPackage/process-message"
     val fakeMessageHubAction = "openwhisk-messagehub/messageHubFeed"
     val deployAction = "/whisk.system/deployWeb/wskdeploy"
     val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
@@ -62,23 +62,6 @@ class MessageHubTests extends TestHelpers
     val swiftRuntimePath = "runtimes/swift"
     val swiftfolder = "../runtimes/swift/actions";
     val swiftkind = JsString("swift:3.1.1")
-
-    def makePostCallWithExpectedResult(params: JsObject, expectedResult: String, expectedCode: Int) = {
-      val response = RestAssured.given()
-          .contentType("application/json\r\n")
-          .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
-          .body(params.toString())
-          .post(deployActionURL)
-      assert(response.statusCode() == expectedCode)
-      response.body.asString should include(expectedResult)
-      response.body.asString.parseJson.asJsObject.getFields("activationId") should have length 1
-    }
-
-    def verifyAction(action: RunResult, name: String, kindValue: JsString): Unit = {
-      val stdout = action.stdout
-      assert(stdout.startsWith(s"ok: got action $name\n"))
-      wsk.parseJsonString(stdout).fields("exec").asJsObject.fields("kind") shouldBe kindValue
-    }
 
     behavior of "MessageHub Template"
 
@@ -101,19 +84,215 @@ class MessageHubTests extends TestHelpers
         "wskAuth" -> JsString(wskprops.authKey)
       ), successStatus, 200);
 
-      withActivation(wsk.activation, wsk.action.invoke(messagehubActionPackage)) {
-        _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
-      }
-
+      // check that the actions were created and can be invoked with expected results
       withActivation(wsk.activation, wsk.action.invoke(fakeMessageHubAction, Map("message" -> "echo".toJson))) {
         _.response.result.get.toString should include("echo")
       }
 
-      val action = wsk.action.get("myPackage/process-change")
-      verifyAction(action, messagehubActionPackage, nodejs8kind)
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+        _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
+      }
+
+      // confirm trigger exists
+      val triggers = wsk.trigger.list()
+      verifyTriggerList(triggers, "myTrigger");
+
+      // confirm rule exists
+      val rules = wsk.rule.list()
+      verifyRuleList(rules, "myRule")
+
+      val action = wsk.action.get(messagehubAction)
+      verifyAction(action, messagehubAction, nodejs8kind)
 
       // clean up after test
-      wsk.action.delete(fakeMessageHubAction)
+      wsk.action.delete(messagehubAction)
+      wsk.pkg.delete("myPackage")
+      wsk.trigger.delete("myTrigger")
+      wsk.rule.delete("myRule")
+    }
+
+    // test to create the nodejs 6 messagehub trigger template from github url.  Will use preinstalled folder.
+    it should "create the nodejs 6 messagehub trigger action from github url" in {
+      makePostCallWithExpectedResult(JsObject(
+        "gitUrl" -> JsString(deployTestRepo),
+        "manifestPath" -> JsString(node6RuntimePath),
+        "envData" -> JsObject(
+            "PACKAGE_NAME" -> JsString("myPackage"),
+            "KAFKA_BROKERS" -> JsString("brokers,list"),
+            "MESSAGEHUB_USER" -> JsString("username"),
+            "MESSAGEHUB_PASS" -> JsString("password"),
+            "KAFKA_ADMIN_URL" -> JsString("admin_url"),
+            "KAFKA_TOPIC" -> JsString("topic"),
+            "TRIGGER_NAME" -> JsString("myTrigger"),
+            "RULE_NAME" -> JsString("myRule")
+        ),
+        "wskApiHost" -> JsString(wskprops.apihost),
+        "wskAuth" -> JsString(wskprops.authKey)
+      ), successStatus, 200);
+
+      // check that the actions were created and can be invoked with expected results
+      withActivation(wsk.activation, wsk.action.invoke(fakeMessageHubAction, Map("message" -> "echo".toJson))) {
+        _.response.result.get.toString should include("echo")
+      }
+
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+        _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
+      }
+
+      // confirm trigger exists
+      val triggers = wsk.trigger.list()
+      verifyTriggerList(triggers, "myTrigger");
+
+      // confirm rule exists
+      val rules = wsk.rule.list()
+      verifyRuleList(rules, "myRule")
+
+      val action = wsk.action.get(messagehubAction)
+      verifyAction(action, messagehubAction, nodejs6kind)
+
+      // clean up after test
+      wsk.action.delete(messagehubAction)
+      wsk.pkg.delete("myPackage")
+      wsk.trigger.delete("myTrigger")
+      wsk.rule.delete("myRule")
+    }
+
+    // test to create the php messagehub trigger template from github url.  Will use preinstalled folder.
+    it should "create the php messagehub trigger action from github url" in {
+      makePostCallWithExpectedResult(JsObject(
+        "gitUrl" -> JsString(deployTestRepo),
+        "manifestPath" -> JsString(phpRuntimePath),
+        "envData" -> JsObject(
+            "PACKAGE_NAME" -> JsString("myPackage"),
+            "KAFKA_BROKERS" -> JsString("brokers,list"),
+            "MESSAGEHUB_USER" -> JsString("username"),
+            "MESSAGEHUB_PASS" -> JsString("password"),
+            "KAFKA_ADMIN_URL" -> JsString("admin_url"),
+            "KAFKA_TOPIC" -> JsString("topic"),
+            "TRIGGER_NAME" -> JsString("myTrigger"),
+            "RULE_NAME" -> JsString("myRule")
+        ),
+        "wskApiHost" -> JsString(wskprops.apihost),
+        "wskAuth" -> JsString(wskprops.authKey)
+      ), successStatus, 200);
+
+      // check that the actions were created and can be invoked with expected results
+      withActivation(wsk.activation, wsk.action.invoke(fakeMessageHubAction, Map("message" -> "echo".toJson))) {
+        _.response.result.get.toString should include("echo")
+      }
+
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+        _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
+      }
+
+      // confirm trigger exists
+      val triggers = wsk.trigger.list()
+      verifyTriggerList(triggers, "myTrigger");
+
+      // confirm rule exists
+      val rules = wsk.rule.list()
+      verifyRuleList(rules, "myRule")
+
+      val action = wsk.action.get(messagehubAction)
+      verifyAction(action, messagehubAction, phpkind)
+
+      // clean up after test
+      wsk.action.delete(messagehubAction)
+      wsk.pkg.delete("myPackage")
+      wsk.trigger.delete("myTrigger")
+      wsk.rule.delete("myRule")
+    }
+
+    // test to create the python messagehub trigger template from github url.  Will use preinstalled folder.
+    it should "create the python messagehub trigger action from github url" in {
+      makePostCallWithExpectedResult(JsObject(
+        "gitUrl" -> JsString(deployTestRepo),
+        "manifestPath" -> JsString(pythonRuntimePath),
+        "envData" -> JsObject(
+            "PACKAGE_NAME" -> JsString("myPackage"),
+            "KAFKA_BROKERS" -> JsString("brokers,list"),
+            "MESSAGEHUB_USER" -> JsString("username"),
+            "MESSAGEHUB_PASS" -> JsString("password"),
+            "KAFKA_ADMIN_URL" -> JsString("admin_url"),
+            "KAFKA_TOPIC" -> JsString("topic"),
+            "TRIGGER_NAME" -> JsString("myTrigger"),
+            "RULE_NAME" -> JsString("myRule")
+        ),
+        "wskApiHost" -> JsString(wskprops.apihost),
+        "wskAuth" -> JsString(wskprops.authKey)
+      ), successStatus, 200);
+
+      // check that the actions were created and can be invoked with expected results
+      withActivation(wsk.activation, wsk.action.invoke(fakeMessageHubAction, Map("message" -> "echo".toJson))) {
+        _.response.result.get.toString should include("echo")
+      }
+
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+        _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
+      }
+
+      // confirm trigger exists
+      val triggers = wsk.trigger.list()
+      verifyTriggerList(triggers, "myTrigger");
+
+      // confirm rule exists
+      val rules = wsk.rule.list()
+      verifyRuleList(rules, "myRule")
+
+      val action = wsk.action.get(messagehubAction)
+      verifyAction(action, messagehubAction, pythonkind)
+
+      // clean up after test
+      wsk.action.delete(messagehubAction)
+      wsk.pkg.delete("myPackage")
+      wsk.trigger.delete("myTrigger")
+      wsk.rule.delete("myRule")
+    }
+
+    // test to create the swift messagehub trigger template from github url.  Will use preinstalled folder.
+    it should "create the swift messagehub trigger action from github url" in {
+      makePostCallWithExpectedResult(JsObject(
+        "gitUrl" -> JsString(deployTestRepo),
+        "manifestPath" -> JsString(swiftRuntimePath),
+        "envData" -> JsObject(
+            "PACKAGE_NAME" -> JsString("myPackage"),
+            "KAFKA_BROKERS" -> JsString("brokers,list"),
+            "MESSAGEHUB_USER" -> JsString("username"),
+            "MESSAGEHUB_PASS" -> JsString("password"),
+            "KAFKA_ADMIN_URL" -> JsString("admin_url"),
+            "KAFKA_TOPIC" -> JsString("topic"),
+            "TRIGGER_NAME" -> JsString("myTrigger"),
+            "RULE_NAME" -> JsString("myRule")
+        ),
+        "wskApiHost" -> JsString(wskprops.apihost),
+        "wskAuth" -> JsString(wskprops.authKey)
+      ), successStatus, 200);
+
+      // check that the actions were created and can be invoked with expected results
+      withActivation(wsk.activation, wsk.action.invoke(fakeMessageHubAction, Map("message" -> "echo".toJson))) {
+        _.response.result.get.toString should include("echo")
+      }
+
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+        _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
+      }
+
+      // confirm trigger exists
+      val triggers = wsk.trigger.list()
+      verifyTriggerList(triggers, "myTrigger");
+
+      // confirm rule exists
+      val rules = wsk.rule.list()
+      verifyRuleList(rules, "myRule")
+
+      val action = wsk.action.get(messagehubAction)
+      verifyAction(action, messagehubAction, swiftkind)
+
+      // clean up after test
+      wsk.action.delete(messagehubAction)
+      wsk.pkg.delete("myPackage")
+      wsk.trigger.delete("myTrigger")
+      wsk.rule.delete("myRule")
     }
 
     val catsArray = Map("cats" -> JsArray(JsObject(
@@ -264,6 +443,7 @@ class MessageHubTests extends TestHelpers
       _.response.result.get.toString should include regex """Red.*Kat"""
     }
   }
+
   it should "invoke process-message.swift without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubSwift"
@@ -278,5 +458,34 @@ class MessageHubTests extends TestHelpers
         activation.response.success shouldBe false
         activation.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
+  }
+
+  private def makePostCallWithExpectedResult(params: JsObject, expectedResult: String, expectedCode: Int) = {
+    val response = RestAssured.given()
+        .contentType("application/json\r\n")
+        .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
+        .body(params.toString())
+        .post(deployActionURL)
+    assert(response.statusCode() == expectedCode)
+    response.body.asString should include(expectedResult)
+    response.body.asString.parseJson.asJsObject.getFields("activationId") should have length 1
+  }
+
+  private def verifyRuleList(ruleListResult: RunResult, ruleName: String) = {
+    val ruleList = ruleListResult.stdout
+    val listOutput = ruleList.lines
+    listOutput.find(_.contains(ruleName)).get should (include(ruleName) and include("active"))
+  }
+
+  private def verifyTriggerList(triggerListResult: RunResult, triggerName: String) = {
+    val triggerList = triggerListResult.stdout
+    val listOutput = triggerList.lines
+    listOutput.find(_.contains(triggerName)).get should include(triggerName)
+  }
+
+  private def verifyAction(action: RunResult, name: String, kindValue: JsString): Unit = {
+    val stdout = action.stdout
+    assert(stdout.startsWith(s"ok: got action $name\n"))
+    wsk.parseJsonString(stdout).fields("exec").asJsObject.fields("kind") shouldBe kindValue
   }
 }

@@ -5,7 +5,6 @@
 #   Package:  openwhisk-messagehub
 #   Package:  messagehub-trigger
 #   Action:   messagehub-trigger/process-message.js
-#   Sequence: messagehub-trigger/process-message-messagehub-sequence
 #   Trigger:  $TRIGGER_NAME
 #   Rule:     $RULE_NAME
 
