@@ -58,7 +58,7 @@ class MessageHubTests extends TestHelpers
     val phpkind = JsString("php:7.1")
     val pythonRuntimePath = "runtimes/python"
     val pythonfolder = "../runtimes/python/actions";
-    val pythonkind = JsString("python:2")
+    val pythonkind = JsString("python-jessie:3")
     val swiftRuntimePath = "runtimes/swift"
     val swiftfolder = "../runtimes/swift/actions";
     val swiftkind = JsString("swift:3.1.1")
@@ -343,10 +343,9 @@ class MessageHubTests extends TestHelpers
   it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
     val name = "messageHubNode"
-    val kind = Option("nodejs:8")
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind)
+      action.create(name, file, kind = Some("nodejs:8"))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
@@ -361,7 +360,7 @@ class MessageHubTests extends TestHelpers
     val kind = Option("nodejs:8")
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind)
+      action.create(name, file, kind = Some("nodejs:8"))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) {

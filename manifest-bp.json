@@ -1,18 +1,39 @@
 {
-  "_id": "6802d81ad56169c9ed8a53a6b000bab1",
-  "_rev": "7-94cafbe2f3db8b5d9448d1358ccc6efd",
-  "name": "New MessageHub Item",
-  "description": "When a messagehub feed has a new item added, log the change in the console.",
-  "long_description": "This template will create an action and a trigger that will kick off that action.  The trigger is fired whenever there is a new item added to the messagehub instance and queue chosen when you create this template.",
-  "url": "https://github.com/zachschultz/owbp-message-hub-trigger",
-  "runtime": {
-    "name": "Node.js 6",
-    "kind": "nodejs:6",
-    "type": "nodejs"
-  },
+  "_comment": "This file is not used, but represents data stored in UI for templates",
+  "id": 2,
+  "name": "Message Hub Events",
+  "description": "When a Message Hub topic has new data added, log the change in the console.",
+  "long_description": "This Template will create an action and a trigger that will kick off that action. The trigger is fired whenever there is a new item added to the Message Hub topic chosen when you create this Template.",
+  "url": "https://github.com/ibm-functions/template-messagehub-trigger",
+  "commit": "74e09e77e3200be32746ec8668d97d88cebc55ff",
+  "runtimes": [
+    {
+      "name": "Node.js 8",
+      "kind": "nodejs:8",
+      "type": "nodejs",
+    },
+    {
+      "name": "Node.js 6",
+      "kind": "nodejs:6",
+      "type": "nodejs-6",
+    },
+    {
+      "name": "Swift 3.1.1",
+      "kind": "swift:3.1.1",
+      "type": "swift",
+    },
+    {
+      "name": "Python 3.6.4",
+      "kind": "python-jessie:3",
+      "type": "python",
+    },
+    {
+      "name": "PHP 7.1",
+      "kind": "php:7.1",
+      "type": "php",
+    },
+  ],
   "categories": [
-    "nodejs",
     "messagehub",
-    "kafka"
-  ]
+  ],
 }
