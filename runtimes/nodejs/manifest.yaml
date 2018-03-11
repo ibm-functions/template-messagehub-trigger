@@ -1,4 +1,4 @@
-# Wskdeploy manifest for openwhisk-cloudant-trigger
+# Wskdeploy manifest for openwhisk-messagehub-trigger
 # GitHub repo is located at https://github.com/IBM/openwhisk-message-hub-trigger
 
 # Deployment using this manifest file creates the following OpenWhisk components:
