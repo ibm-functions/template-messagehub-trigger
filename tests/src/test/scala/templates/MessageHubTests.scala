@@ -45,6 +45,10 @@ class MessageHubTests extends TestHelpers
     val fakeMessageHubAction = "openwhisk-messagehub/messageHubFeed"
     val deployAction = "/whisk.system/deployWeb/wskdeploy"
     val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
+    val triggerName = "myTrigger"
+    val packageName = "myPackage"
+    val ruleName = "myRule"
+    val binding = "openwhisk-messagehub"
 
     //set parameters for deploy tests
     val node8RuntimePath = "runtimes/nodejs"
@@ -71,14 +75,14 @@ class MessageHubTests extends TestHelpers
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(node8RuntimePath),
         "envData" -> JsObject(
-            "PACKAGE_NAME" -> JsString("myPackage"),
+            "PACKAGE_NAME" -> JsString(packageName),
             "KAFKA_BROKERS" -> JsString("brokers,list"),
             "MESSAGEHUB_USER" -> JsString("username"),
             "MESSAGEHUB_PASS" -> JsString("password"),
             "KAFKA_ADMIN_URL" -> JsString("admin_url"),
             "KAFKA_TOPIC" -> JsString("topic"),
-            "TRIGGER_NAME" -> JsString("myTrigger"),
-            "RULE_NAME" -> JsString("myRule")
+            "TRIGGER_NAME" -> JsString(triggerName),
+            "RULE_NAME" -> JsString(ruleName)
         ),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
@@ -95,21 +99,21 @@ class MessageHubTests extends TestHelpers
 
       // confirm trigger exists
       val triggers = wsk.trigger.list()
-      verifyTriggerList(triggers, "myTrigger");
+      verifyTriggerList(triggers, triggerName);
 
       // confirm rule exists
       val rules = wsk.rule.list()
-      verifyRuleList(rules, "myRule")
+      verifyRuleList(rules, ruleName)
 
       val action = wsk.action.get(messagehubAction)
       verifyAction(action, messagehubAction, JsString(nodejs8kind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
-      wsk.pkg.delete("myPackage")
-      wsk.pkg.delete("openwhisk-messagehub")
-      wsk.trigger.delete("myTrigger")
-      wsk.rule.delete("myRule")
+      wsk.pkg.delete(packageName)
+      wsk.pkg.delete(binding)
+      wsk.trigger.delete(triggerName)
+      wsk.rule.delete(ruleName)
     }
 
     // test to create the nodejs 6 messagehub trigger template from github url.  Will use preinstalled folder.
@@ -118,14 +122,14 @@ class MessageHubTests extends TestHelpers
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(node6RuntimePath),
         "envData" -> JsObject(
-            "PACKAGE_NAME" -> JsString("myPackage"),
+            "PACKAGE_NAME" -> JsString(packageName),
             "KAFKA_BROKERS" -> JsString("brokers,list"),
             "MESSAGEHUB_USER" -> JsString("username"),
             "MESSAGEHUB_PASS" -> JsString("password"),
             "KAFKA_ADMIN_URL" -> JsString("admin_url"),
             "KAFKA_TOPIC" -> JsString("topic"),
-            "TRIGGER_NAME" -> JsString("myTrigger"),
-            "RULE_NAME" -> JsString("myRule")
+            "TRIGGER_NAME" -> JsString(triggerName),
+            "RULE_NAME" -> JsString(ruleName)
         ),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
@@ -142,21 +146,21 @@ class MessageHubTests extends TestHelpers
 
       // confirm trigger exists
       val triggers = wsk.trigger.list()
-      verifyTriggerList(triggers, "myTrigger");
+      verifyTriggerList(triggers, triggerName);
 
       // confirm rule exists
       val rules = wsk.rule.list()
-      verifyRuleList(rules, "myRule")
+      verifyRuleList(rules, ruleName)
 
       val action = wsk.action.get(messagehubAction)
       verifyAction(action, messagehubAction, JsString(nodejs6kind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
-      wsk.pkg.delete("myPackage")
-      wsk.pkg.delete("openwhisk-messagehub")
-      wsk.trigger.delete("myTrigger")
-      wsk.rule.delete("myRule")
+      wsk.pkg.delete(packageName)
+      wsk.pkg.delete(binding)
+      wsk.trigger.delete(triggerName)
+      wsk.rule.delete(ruleName)
     }
 
     // test to create the php messagehub trigger template from github url.  Will use preinstalled folder.
@@ -165,14 +169,14 @@ class MessageHubTests extends TestHelpers
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(phpRuntimePath),
         "envData" -> JsObject(
-            "PACKAGE_NAME" -> JsString("myPackage"),
+            "PACKAGE_NAME" -> JsString(packageName),
             "KAFKA_BROKERS" -> JsString("brokers,list"),
             "MESSAGEHUB_USER" -> JsString("username"),
             "MESSAGEHUB_PASS" -> JsString("password"),
             "KAFKA_ADMIN_URL" -> JsString("admin_url"),
             "KAFKA_TOPIC" -> JsString("topic"),
-            "TRIGGER_NAME" -> JsString("myTrigger"),
-            "RULE_NAME" -> JsString("myRule")
+            "TRIGGER_NAME" -> JsString(triggerName),
+            "RULE_NAME" -> JsString(ruleName)
         ),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
@@ -189,21 +193,21 @@ class MessageHubTests extends TestHelpers
 
       // confirm trigger exists
       val triggers = wsk.trigger.list()
-      verifyTriggerList(triggers, "myTrigger");
+      verifyTriggerList(triggers, triggerName);
 
       // confirm rule exists
       val rules = wsk.rule.list()
-      verifyRuleList(rules, "myRule")
+      verifyRuleList(rules, ruleName)
 
       val action = wsk.action.get(messagehubAction)
       verifyAction(action, messagehubAction, JsString(phpkind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
-      wsk.pkg.delete("myPackage")
-      wsk.pkg.delete("openwhisk-messagehub")
-      wsk.trigger.delete("myTrigger")
-      wsk.rule.delete("myRule")
+      wsk.pkg.delete(packageName)
+      wsk.pkg.delete(binding)
+      wsk.trigger.delete(triggerName)
+      wsk.rule.delete(ruleName)
     }
 
     // test to create the python messagehub trigger template from github url.  Will use preinstalled folder.
@@ -212,14 +216,14 @@ class MessageHubTests extends TestHelpers
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(pythonRuntimePath),
         "envData" -> JsObject(
-            "PACKAGE_NAME" -> JsString("myPackage"),
+            "PACKAGE_NAME" -> JsString(packageName),
             "KAFKA_BROKERS" -> JsString("brokers,list"),
             "MESSAGEHUB_USER" -> JsString("username"),
             "MESSAGEHUB_PASS" -> JsString("password"),
             "KAFKA_ADMIN_URL" -> JsString("admin_url"),
             "KAFKA_TOPIC" -> JsString("topic"),
-            "TRIGGER_NAME" -> JsString("myTrigger"),
-            "RULE_NAME" -> JsString("myRule")
+            "TRIGGER_NAME" -> JsString(triggerName),
+            "RULE_NAME" -> JsString(ruleName)
         ),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
@@ -236,21 +240,21 @@ class MessageHubTests extends TestHelpers
 
       // confirm trigger exists
       val triggers = wsk.trigger.list()
-      verifyTriggerList(triggers, "myTrigger");
+      verifyTriggerList(triggers, triggerName);
 
       // confirm rule exists
       val rules = wsk.rule.list()
-      verifyRuleList(rules, "myRule")
+      verifyRuleList(rules, ruleName)
 
       val action = wsk.action.get(messagehubAction)
       verifyAction(action, messagehubAction, JsString(pythonkind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
-      wsk.pkg.delete("myPackage")
-      wsk.pkg.delete("openwhisk-messagehub")
-      wsk.trigger.delete("myTrigger")
-      wsk.rule.delete("myRule")
+      wsk.pkg.delete(packageName)
+      wsk.pkg.delete(binding)
+      wsk.trigger.delete(triggerName)
+      wsk.rule.delete(ruleName)
     }
 
     // test to create the swift messagehub trigger template from github url.  Will use preinstalled folder.
@@ -259,14 +263,14 @@ class MessageHubTests extends TestHelpers
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(swiftRuntimePath),
         "envData" -> JsObject(
-            "PACKAGE_NAME" -> JsString("myPackage"),
+            "PACKAGE_NAME" -> JsString(packageName),
             "KAFKA_BROKERS" -> JsString("brokers,list"),
             "MESSAGEHUB_USER" -> JsString("username"),
             "MESSAGEHUB_PASS" -> JsString("password"),
             "KAFKA_ADMIN_URL" -> JsString("admin_url"),
             "KAFKA_TOPIC" -> JsString("topic"),
-            "TRIGGER_NAME" -> JsString("myTrigger"),
-            "RULE_NAME" -> JsString("myRule")
+            "TRIGGER_NAME" -> JsString(triggerName),
+            "RULE_NAME" -> JsString(ruleName)
         ),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
@@ -283,21 +287,21 @@ class MessageHubTests extends TestHelpers
 
       // confirm trigger exists
       val triggers = wsk.trigger.list()
-      verifyTriggerList(triggers, "myTrigger");
+      verifyTriggerList(triggers, triggerName);
 
       // confirm rule exists
       val rules = wsk.rule.list()
-      verifyRuleList(rules, "myRule")
+      verifyRuleList(rules, ruleName)
 
       val action = wsk.action.get(messagehubAction)
       verifyAction(action, messagehubAction, JsString(swiftkind))
 
       // clean up after test
       wsk.action.delete(messagehubAction)
-      wsk.pkg.delete("myPackage")
-      wsk.pkg.delete("openwhisk-messagehub")
-      wsk.trigger.delete("myTrigger")
-      wsk.rule.delete("myRule")
+      wsk.pkg.delete(packageName)
+      wsk.pkg.delete(binding)
+      wsk.trigger.delete(triggerName)
+      wsk.rule.delete(ruleName)
     }
 
     val catsArray = Map("cats" -> JsArray(JsObject(
