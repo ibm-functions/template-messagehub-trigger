@@ -65,6 +65,11 @@ class MessageHubTests extends TestHelpers
 
     behavior of "MessageHub Template"
 
+    val catsArray = Map("cats" -> JsArray(JsObject(
+      "name" -> JsString("Kat"),
+      "color" -> JsString("Red"))))
+    val finalParam = Map("messages"->JsArray(JsObject("value" -> JsObject(catsArray))))
+
     // test to create the nodejs 8 messagehub trigger template from github url.  Will use preinstalled folder.
     it should "create the nodejs 8 messagehub trigger action from github url" in {
       makePostCallWithExpectedResult(JsObject(
@@ -89,7 +94,7 @@ class MessageHubTests extends TestHelpers
         _.response.result.get.toString should include("echo")
       }
 
-      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction, finalParam)) {
         _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
       }
 
@@ -136,7 +141,7 @@ class MessageHubTests extends TestHelpers
         _.response.result.get.toString should include("echo")
       }
 
-      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction, finalParam)) {
         _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
       }
 
@@ -183,7 +188,7 @@ class MessageHubTests extends TestHelpers
         _.response.result.get.toString should include("echo")
       }
 
-      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction, finalParam)) {
         _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
       }
 
@@ -230,7 +235,7 @@ class MessageHubTests extends TestHelpers
         _.response.result.get.toString should include("echo")
       }
 
-      withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+      withActivation(wsk.activation, wsk.action.invoke(messagehubAction, finalParam)) {
         _.response.result.get.toString should include("Please make sure name and color are passed in as params.")
       }
 
@@ -299,11 +304,6 @@ class MessageHubTests extends TestHelpers
       wsk.trigger.delete("myTrigger")
       wsk.rule.delete("myRule")
     }
-
-    val catsArray = Map("cats" -> JsArray(JsObject(
-      "name" -> JsString("Kat"),
-      "color" -> JsString("Red"))))
-    val finalParam = Map("messages"->JsArray(JsObject("value" -> JsObject(catsArray))))
 
   /**
     * Test the nodejs 6 "messageHub trigger" template
