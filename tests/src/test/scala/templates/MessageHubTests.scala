@@ -79,9 +79,10 @@ class MessageHubTests extends TestHelpers
   // test to create the nodejs 8 messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the nodejs 8 messagehub trigger action from github url" in {
     // create unique asset names
-    val nodejs8Package = packageName + "nodejs8"
-    val nodejs8Trigger = triggerName + "nodejs8"
-    val nodejs8Rule = ruleName + "nodejs8"
+    val timestamp: String = System.currentTimeMillis.toString
+    val nodejs8Package = packageName + timestamp
+    val nodejs8Trigger = triggerName + timestamp
+    val nodejs8Rule = ruleName + timestamp
     val nodejs8MessagehubAction = nodejs8Package + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -142,9 +143,10 @@ class MessageHubTests extends TestHelpers
   // test to create the nodejs 6 messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the nodejs 6 messagehub trigger action from github url" in {
     // create unique asset names
-    val nodejs6Package = packageName + "nodejs6"
-    val nodejs6Trigger = triggerName + "nodejs6"
-    val nodejs6Rule = ruleName + "nodejs6"
+    val timestamp: String = System.currentTimeMillis.toString
+    val nodejs6Package = packageName + timestamp
+    val nodejs6Trigger = triggerName + timestamp
+    val nodejs6Rule = ruleName + timestamp
     val nodejs6MessagehubAction = nodejs6Package + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -205,9 +207,10 @@ class MessageHubTests extends TestHelpers
   // test to create the php messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the php messagehub trigger action from github url" in {
     // create unique asset names
-    val phpPackage = packageName + "php"
-    val phpTrigger = triggerName + "php"
-    val phpRule = ruleName + "php"
+    val timestamp: String = System.currentTimeMillis.toString
+    val phpPackage = packageName + timestamp
+    val phpTrigger = triggerName + timestamp
+    val phpRule = ruleName + timestamp
     val phpMessagehubAction = phpPackage + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -268,9 +271,10 @@ class MessageHubTests extends TestHelpers
   // test to create the python messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the python messagehub trigger action from github url" in {
     // create unique asset names
-    val pythonPackage = packageName + "python"
-    val pythonTrigger = triggerName + "python"
-    val pythonRule = ruleName + "python"
+    val timestamp: String = System.currentTimeMillis.toString
+    val pythonPackage = packageName + timestamp
+    val pythonTrigger = triggerName + timestamp
+    val pythonRule = ruleName + timestamp
     val pythonMessagehubAction = pythonPackage + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -331,9 +335,10 @@ class MessageHubTests extends TestHelpers
   // test to create the swift messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the swift messagehub trigger action from github url" in {
     // create unique asset names
-    val swiftPackage = packageName + "swift"
-    val swiftTrigger = triggerName + "swift"
-    val swiftRule = ruleName + "swift"
+    val timestamp: String = System.currentTimeMillis.toString
+    val swiftPackage = packageName + timestamp
+    val swiftTrigger = triggerName + timestamp
+    val swiftRule = ruleName + timestamp
     val swiftMessagehubAction = swiftPackage + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -395,8 +400,8 @@ class MessageHubTests extends TestHelpers
     * Test the nodejs 6 "messageHub trigger" template
     */
   it should "invoke nodejs 6 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubNode6"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubNode6" + timestamp
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs6kind))
@@ -408,8 +413,8 @@ class MessageHubTests extends TestHelpers
   }
 
   it should "invoke nodejs 6 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubNode6-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubNode6" + timestamp
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -427,8 +432,8 @@ class MessageHubTests extends TestHelpers
     * Test the nodejs 8 "messageHub trigger" template
     */
   it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubNode8"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubNode8" + timestamp
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs8kind))
@@ -440,8 +445,8 @@ class MessageHubTests extends TestHelpers
   }
 
   it should "invoke nodejs 8 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubNode8-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubNode8" + timestamp
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -459,8 +464,8 @@ class MessageHubTests extends TestHelpers
     * Test the python "messageHub trigger" template
     */
   it should "invoke process-message.py and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubPython"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubPython" + timestamp
     val file = Some(new File(pythonfolder, "process-message.py").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(pythonkind))
@@ -471,8 +476,8 @@ class MessageHubTests extends TestHelpers
     }
   }
   it should "invoke process-message.py without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubPython-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubPython" + timestamp
     val file = Some(new File(pythonfolder, "process-message.py").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -490,8 +495,8 @@ class MessageHubTests extends TestHelpers
     * Test the php "messageHub trigger" template
     */
   it should "invoke process-message.php and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubPhp"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubPhp" + timestamp
     val file = Some(new File(phpfolder, "process-message.php").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(phpkind))
@@ -502,8 +507,8 @@ class MessageHubTests extends TestHelpers
     }
   }
   it should "invoke process-message.php without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubPhp-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubPhp" + timestamp
     val file = Some(new File(phpfolder, "process-message.php").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -521,8 +526,8 @@ class MessageHubTests extends TestHelpers
     * Test the swift "messageHub trigger" template
     */
   it should "invoke process-message.swift and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubSwift"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubSwift" + timestamp
     val file = Some(new File(swiftfolder, "process-message.swift").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(swiftkind))
@@ -534,8 +539,8 @@ class MessageHubTests extends TestHelpers
   }
 
   it should "invoke process-message.swift without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-
-    val name = "messageHubSwift-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "messageHubSwift" + timestamp
     val file = Some(new File(swiftfolder, "process-message.swift").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
