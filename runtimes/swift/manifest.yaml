@@ -1,11 +1,10 @@
-# Wskdeploy manifest for openwhisk-cloudant-trigger
+# Wskdeploy manifest for openwhisk-messagehub-trigger
 # GitHub repo is located at https://github.com/IBM/openwhisk-message-hub-trigger
 
 # Deployment using this manifest file creates the following OpenWhisk components:
 #   Package:  openwhisk-messagehub
 #   Package:  messagehub-trigger
 #   Action:   messagehub-trigger/process-message.js
-#   Sequence: messagehub-trigger/process-message-messagehub-sequence
 #   Trigger:  $TRIGGER_NAME
 #   Rule:     $RULE_NAME
 
@@ -31,7 +30,7 @@ packages:
     actions:
       process-message:
         function: actions/process-message.swift
-        runtime: swift:3.1.1
+        runtime: swift:4.1
     triggers:
       $TRIGGER_NAME:
         feed: openwhisk-messagehub/messageHubFeed
