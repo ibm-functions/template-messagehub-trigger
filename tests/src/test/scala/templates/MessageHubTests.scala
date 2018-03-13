@@ -232,7 +232,7 @@ class MessageHubTests extends TestHelpers
       _.response.result.get.toString should include("echo")
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(php6MessagehubAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(phpMessagehubAction)) {
       _.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
 
@@ -254,11 +254,11 @@ class MessageHubTests extends TestHelpers
     val rules = wsk.rule.list()
     verifyRuleList(rules, phpRule)
 
-    val action = wsk.action.get(php6MessagehubAction)
-    verifyAction(action, php6MessagehubAction, JsString(phpkind))
+    val action = wsk.action.get(phpMessagehubAction)
+    verifyAction(action, phpMessagehubAction, JsString(phpkind))
 
     // clean up after test
-    wsk.action.delete(php6MessagehubAction)
+    wsk.action.delete(phpMessagehubAction)
     wsk.pkg.delete(phpPackage)
     wsk.pkg.delete(binding)
     wsk.trigger.delete(phpTrigger)
