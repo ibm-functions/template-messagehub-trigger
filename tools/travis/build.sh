@@ -23,6 +23,9 @@ docker tag ibmfunctions/action-nodejs-v8 ${IMAGE_PREFIX}/action-nodejs-v8
 docker pull ibmfunctions/action-python-v3
 docker tag ibmfunctions/action-python-v3 ${IMAGE_PREFIX}/action-python-v3
 
+docker pull ibmfunctions/action-swift-v4.1
+docker tag ibmfunctions/action-swift-v4.1 ${IMAGE_PREFIX}/action-swift-v4.1
+
 cd $WHISKDIR/ansible
 
 # Deploy Openwhisk
