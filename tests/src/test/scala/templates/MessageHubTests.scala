@@ -78,18 +78,22 @@ class MessageHubTests extends TestHelpers
 
   // test to create the nodejs 8 messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the nodejs 8 messagehub trigger action from github url" in {
+    // create unique asset names
+    val nodejs8Package = packageName + "nodejs8"
+    val nodejs8Trigger = triggerName + "nodejs8"
+    val nodejs8Rule = ruleName + "nodejs8"
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(node8RuntimePath),
       "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(packageName),
+        "PACKAGE_NAME" -> JsString(nodejs8Package),
         "KAFKA_BROKERS" -> JsString("brokers,list"),
         "MESSAGEHUB_USER" -> JsString("username"),
         "MESSAGEHUB_PASS" -> JsString("password"),
         "KAFKA_ADMIN_URL" -> JsString("admin_url"),
         "KAFKA_TOPIC" -> JsString("topic"),
-        "TRIGGER_NAME" -> JsString(triggerName),
-        "RULE_NAME" -> JsString(ruleName)
+        "TRIGGER_NAME" -> JsString(nodejs8Trigger),
+        "RULE_NAME" -> JsString(nodejs8Rule)
       ),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
@@ -106,8 +110,8 @@ class MessageHubTests extends TestHelpers
 
     // confirm trigger exists
     val triggers = wsk.trigger.list()
-    verifyTriggerList(triggers, triggerName);
-    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+    verifyTriggerList(triggers, nodejs8Trigger);
+    val triggerRun = wsk.trigger.fire(nodejs8Trigger, finalParam)
 
     // confirm trigger will fire action with expected result
     withActivation(wsk.activation, triggerRun) { activation =>
@@ -120,21 +124,26 @@ class MessageHubTests extends TestHelpers
 
     // confirm rule exists
     val rules = wsk.rule.list()
-    verifyRuleList(rules, ruleName)
+    verifyRuleList(rules, nodejs8Rule)
 
     val action = wsk.action.get(messagehubAction)
     verifyAction(action, messagehubAction, JsString(nodejs8kind))
 
     // clean up after test
     wsk.action.delete(messagehubAction)
-    wsk.pkg.delete(packageName)
+    wsk.pkg.delete(nodejs8Package)
     wsk.pkg.delete(binding)
-    wsk.trigger.delete(triggerName)
-    wsk.rule.delete(ruleName)
+    wsk.trigger.delete(nodejs8Trigger)
+    wsk.rule.delete(nodejs8Rule)
   }
 
   // test to create the nodejs 6 messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the nodejs 6 messagehub trigger action from github url" in {
+    // create unique asset names
+    val nodejs6Package = packageName + "nodejs6"
+    val nodejs6Trigger = triggerName + "nodejs6"
+    val nodejs6Rule = ruleName + "nodejs6"
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(node6RuntimePath),
@@ -192,6 +201,11 @@ class MessageHubTests extends TestHelpers
 
   // test to create the php messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the php messagehub trigger action from github url" in {
+    // create unique asset names
+    val phpPackage = packageName + "php"
+    val phpTrigger = triggerName + "php"
+    val phpRule = ruleName + "php"
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(phpRuntimePath),
@@ -249,6 +263,11 @@ class MessageHubTests extends TestHelpers
 
   // test to create the python messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the python messagehub trigger action from github url" in {
+    // create unique asset names
+    val pythonPackage = packageName + "python"
+    val pythonTrigger = triggerName + "python"
+    val pythonRule = ruleName + "python"
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(pythonRuntimePath),
@@ -306,6 +325,11 @@ class MessageHubTests extends TestHelpers
 
   // test to create the swift messagehub trigger template from github url.  Will use preinstalled folder.
   it should "create the swift messagehub trigger action from github url" in {
+    // create unique asset names
+    val swiftPackage = packageName + "swift"
+    val swiftTrigger = triggerName + "swift"
+    val swiftRule = ruleName + "swift"
+    
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(swiftRuntimePath),
