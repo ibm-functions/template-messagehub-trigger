@@ -42,7 +42,7 @@ class MessageHubTests extends TestHelpers
     """"status":"success""""
 
   val deployTestRepo = "https://github.com/ibm-functions/template-messagehub-trigger"
-  val messagehubAction = "myPackage/process-message"
+  val messagehubAction = "process-message"
   val fakeMessageHubAction = "openwhisk-messagehub/messageHubFeed"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
@@ -66,7 +66,7 @@ class MessageHubTests extends TestHelpers
   val pythonkind = "python-jessie:3"
   val swiftRuntimePath = "runtimes/swift"
   val swiftfolder = "../runtimes/swift/actions";
-  val swiftkind = "swift:3.1.1"
+  val swiftkind = "swift:4.1"
 
   // params for messagehub actions
   val catsArray = Map("cats" -> JsArray(JsObject(
@@ -82,6 +82,8 @@ class MessageHubTests extends TestHelpers
     val nodejs8Package = packageName + "nodejs8"
     val nodejs8Trigger = triggerName + "nodejs8"
     val nodejs8Rule = ruleName + "nodejs8"
+    val nodejs8MessagehubAction = nodejs8Package + "/" + messagehubAction
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(node8RuntimePath),
@@ -104,7 +106,7 @@ class MessageHubTests extends TestHelpers
       _.response.result.get.toString should include("echo")
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(nodejs8MessagehubAction)) {
       _.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
 
@@ -126,11 +128,11 @@ class MessageHubTests extends TestHelpers
     val rules = wsk.rule.list()
     verifyRuleList(rules, nodejs8Rule)
 
-    val action = wsk.action.get(messagehubAction)
-    verifyAction(action, messagehubAction, JsString(nodejs8kind))
+    val action = wsk.action.get(nodejs8MessagehubAction)
+    verifyAction(action, nodejs8MessagehubAction, JsString(nodejs8kind))
 
     // clean up after test
-    wsk.action.delete(messagehubAction)
+    wsk.action.delete(nodejs8MessagehubAction)
     wsk.pkg.delete(nodejs8Package)
     wsk.pkg.delete(binding)
     wsk.trigger.delete(nodejs8Trigger)
@@ -143,19 +145,20 @@ class MessageHubTests extends TestHelpers
     val nodejs6Package = packageName + "nodejs6"
     val nodejs6Trigger = triggerName + "nodejs6"
     val nodejs6Rule = ruleName + "nodejs6"
+    val nodejs6MessagehubAction = nodejs6Package + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(node6RuntimePath),
       "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(packageName),
+        "PACKAGE_NAME" -> JsString(nodejs6Package),
         "KAFKA_BROKERS" -> JsString("brokers,list"),
         "MESSAGEHUB_USER" -> JsString("username"),
         "MESSAGEHUB_PASS" -> JsString("password"),
         "KAFKA_ADMIN_URL" -> JsString("admin_url"),
         "KAFKA_TOPIC" -> JsString("topic"),
-        "TRIGGER_NAME" -> JsString(triggerName),
-        "RULE_NAME" -> JsString(ruleName)
+        "TRIGGER_NAME" -> JsString(nodejs6Trigger),
+        "RULE_NAME" -> JsString(nodejs6Rule)
       ),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
@@ -166,14 +169,14 @@ class MessageHubTests extends TestHelpers
       _.response.result.get.toString should include("echo")
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(nodejs6MessagehubAction)) {
       _.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
 
     // confirm trigger exists
     val triggers = wsk.trigger.list()
-    verifyTriggerList(triggers, triggerName);
-    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+    verifyTriggerList(triggers, nodejs6Trigger);
+    val triggerRun = wsk.trigger.fire(nodejs6Trigger, finalParam)
 
     // confirm trigger will fire action with expected result
     withActivation(wsk.activation, triggerRun) { activation =>
@@ -186,17 +189,17 @@ class MessageHubTests extends TestHelpers
 
     // confirm rule exists
     val rules = wsk.rule.list()
-    verifyRuleList(rules, ruleName)
+    verifyRuleList(rules, nodejs6Rule)
 
-    val action = wsk.action.get(messagehubAction)
-    verifyAction(action, messagehubAction, JsString(nodejs6kind))
+    val action = wsk.action.get(nodejs6MessagehubAction)
+    verifyAction(action, nodejs6MessagehubAction, JsString(nodejs6kind))
 
     // clean up after test
-    wsk.action.delete(messagehubAction)
-    wsk.pkg.delete(packageName)
+    wsk.action.delete(nodejs6MessagehubAction)
+    wsk.pkg.delete(nodejs6Package)
     wsk.pkg.delete(binding)
-    wsk.trigger.delete(triggerName)
-    wsk.rule.delete(ruleName)
+    wsk.trigger.delete(nodejs6Trigger)
+    wsk.rule.delete(nodejs6Rule)
   }
 
   // test to create the php messagehub trigger template from github url.  Will use preinstalled folder.
@@ -205,19 +208,20 @@ class MessageHubTests extends TestHelpers
     val phpPackage = packageName + "php"
     val phpTrigger = triggerName + "php"
     val phpRule = ruleName + "php"
+    val phpMessagehubAction = phpPackage + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(phpRuntimePath),
       "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(packageName),
+        "PACKAGE_NAME" -> JsString(phpPackage),
         "KAFKA_BROKERS" -> JsString("brokers,list"),
         "MESSAGEHUB_USER" -> JsString("username"),
         "MESSAGEHUB_PASS" -> JsString("password"),
         "KAFKA_ADMIN_URL" -> JsString("admin_url"),
         "KAFKA_TOPIC" -> JsString("topic"),
-        "TRIGGER_NAME" -> JsString(triggerName),
-        "RULE_NAME" -> JsString(ruleName)
+        "TRIGGER_NAME" -> JsString(phpTrigger),
+        "RULE_NAME" -> JsString(phpRule)
       ),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
@@ -228,14 +232,14 @@ class MessageHubTests extends TestHelpers
       _.response.result.get.toString should include("echo")
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(php6MessagehubAction)) {
       _.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
 
     // confirm trigger exists
     val triggers = wsk.trigger.list()
-    verifyTriggerList(triggers, triggerName);
-    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+    verifyTriggerList(triggers, phpTrigger);
+    val triggerRun = wsk.trigger.fire(phpTrigger, finalParam)
 
     // confirm trigger will fire action with expected result
     withActivation(wsk.activation, triggerRun) { activation =>
@@ -248,17 +252,17 @@ class MessageHubTests extends TestHelpers
 
     // confirm rule exists
     val rules = wsk.rule.list()
-    verifyRuleList(rules, ruleName)
+    verifyRuleList(rules, phpRule)
 
-    val action = wsk.action.get(messagehubAction)
-    verifyAction(action, messagehubAction, JsString(phpkind))
+    val action = wsk.action.get(php6MessagehubAction)
+    verifyAction(action, php6MessagehubAction, JsString(phpkind))
 
     // clean up after test
-    wsk.action.delete(messagehubAction)
-    wsk.pkg.delete(packageName)
+    wsk.action.delete(php6MessagehubAction)
+    wsk.pkg.delete(phpPackage)
     wsk.pkg.delete(binding)
-    wsk.trigger.delete(triggerName)
-    wsk.rule.delete(ruleName)
+    wsk.trigger.delete(phpTrigger)
+    wsk.rule.delete(phpRule)
   }
 
   // test to create the python messagehub trigger template from github url.  Will use preinstalled folder.
@@ -267,19 +271,20 @@ class MessageHubTests extends TestHelpers
     val pythonPackage = packageName + "python"
     val pythonTrigger = triggerName + "python"
     val pythonRule = ruleName + "python"
+    val pythonMessagehubAction = pythonPackage + "/" + messagehubAction
 
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(pythonRuntimePath),
       "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(packageName),
+        "PACKAGE_NAME" -> JsString(pythonPackage),
         "KAFKA_BROKERS" -> JsString("brokers,list"),
         "MESSAGEHUB_USER" -> JsString("username"),
         "MESSAGEHUB_PASS" -> JsString("password"),
         "KAFKA_ADMIN_URL" -> JsString("admin_url"),
         "KAFKA_TOPIC" -> JsString("topic"),
-        "TRIGGER_NAME" -> JsString(triggerName),
-        "RULE_NAME" -> JsString(ruleName)
+        "TRIGGER_NAME" -> JsString(pythonTrigger),
+        "RULE_NAME" -> JsString(pythonRule)
       ),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
@@ -290,14 +295,14 @@ class MessageHubTests extends TestHelpers
       _.response.result.get.toString should include("echo")
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(pythonMessagehubAction)) {
       _.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
 
     // confirm trigger exists
     val triggers = wsk.trigger.list()
-    verifyTriggerList(triggers, triggerName);
-    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+    verifyTriggerList(triggers, pythonTrigger);
+    val triggerRun = wsk.trigger.fire(pythonTrigger, finalParam)
 
     // confirm trigger will fire action with expected result
     withActivation(wsk.activation, triggerRun) { activation =>
@@ -310,17 +315,17 @@ class MessageHubTests extends TestHelpers
 
     // confirm rule exists
     val rules = wsk.rule.list()
-    verifyRuleList(rules, ruleName)
+    verifyRuleList(rules, pythonRule)
 
-    val action = wsk.action.get(messagehubAction)
-    verifyAction(action, messagehubAction, JsString(pythonkind))
+    val action = wsk.action.get(pythonMessagehubAction)
+    verifyAction(action, pythonMessagehubAction, JsString(pythonkind))
 
     // clean up after test
-    wsk.action.delete(messagehubAction)
-    wsk.pkg.delete(packageName)
+    wsk.action.delete(pythonMessagehubAction)
+    wsk.pkg.delete(pythonPackage)
     wsk.pkg.delete(binding)
-    wsk.trigger.delete(triggerName)
-    wsk.rule.delete(ruleName)
+    wsk.trigger.delete(pythonTrigger)
+    wsk.rule.delete(pythonRule)
   }
 
   // test to create the swift messagehub trigger template from github url.  Will use preinstalled folder.
@@ -329,19 +334,20 @@ class MessageHubTests extends TestHelpers
     val swiftPackage = packageName + "swift"
     val swiftTrigger = triggerName + "swift"
     val swiftRule = ruleName + "swift"
-    
+    val swiftMessagehubAction = swiftPackage + "/" + messagehubAction
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(swiftRuntimePath),
       "envData" -> JsObject(
-        "PACKAGE_NAME" -> JsString(packageName),
+        "PACKAGE_NAME" -> JsString(swiftPackage),
         "KAFKA_BROKERS" -> JsString("brokers,list"),
         "MESSAGEHUB_USER" -> JsString("username"),
         "MESSAGEHUB_PASS" -> JsString("password"),
         "KAFKA_ADMIN_URL" -> JsString("admin_url"),
         "KAFKA_TOPIC" -> JsString("topic"),
-        "TRIGGER_NAME" -> JsString(triggerName),
-        "RULE_NAME" -> JsString(ruleName)
+        "TRIGGER_NAME" -> JsString(swiftTrigger),
+        "RULE_NAME" -> JsString(swiftRule)
       ),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
@@ -352,14 +358,14 @@ class MessageHubTests extends TestHelpers
       _.response.result.get.toString should include("echo")
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(messagehubAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(swiftMessagehubAction)) {
       _.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
 
     // confirm trigger exists
     val triggers = wsk.trigger.list()
-    verifyTriggerList(triggers, triggerName);
-    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+    verifyTriggerList(triggers, swiftTrigger);
+    val triggerRun = wsk.trigger.fire(swiftTrigger, finalParam)
 
     // confirm trigger will fire action with expected result
     withActivation(wsk.activation, triggerRun) { activation =>
@@ -372,17 +378,17 @@ class MessageHubTests extends TestHelpers
 
     // confirm rule exists
     val rules = wsk.rule.list()
-    verifyRuleList(rules, ruleName)
+    verifyRuleList(rules, swiftRule)
 
-    val action = wsk.action.get(messagehubAction)
-    verifyAction(action, messagehubAction, JsString(swiftkind))
+    val action = wsk.action.get(swiftMessagehubAction)
+    verifyAction(action, swiftMessagehubAction, JsString(swiftkind))
 
     // clean up after test
-    wsk.action.delete(messagehubAction)
-    wsk.pkg.delete(packageName)
+    wsk.action.delete(swiftMessagehubAction)
+    wsk.pkg.delete(swiftPackage)
     wsk.pkg.delete(binding)
-    wsk.trigger.delete(triggerName)
-    wsk.rule.delete(ruleName)
+    wsk.trigger.delete(swiftTrigger)
+    wsk.rule.delete(swiftRule)
   }
 
   /**

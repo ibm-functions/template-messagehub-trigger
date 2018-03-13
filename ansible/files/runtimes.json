@@ -83,6 +83,16 @@
                     "name": "action-swift-v3.1.1"
                 },
                 "deprecated": false
+            },
+            {
+                "kind": "swift:4.1",
+                "default": false,
+                "image": {
+                    "name": "action-swift-v4.1",
+                    "prefix": "ibmfunctions",
+                    "tag":"latest"
+                },
+                "deprecated": false
             }
         ],
         "java": [

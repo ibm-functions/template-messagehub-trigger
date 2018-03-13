@@ -30,7 +30,7 @@ packages:
     actions:
       process-message:
         function: actions/process-message.swift
-        runtime: swift:3.1.1
+        runtime: swift:4.1
     triggers:
       $TRIGGER_NAME:
         feed: openwhisk-messagehub/messageHubFeed
