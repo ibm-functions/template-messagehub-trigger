@@ -366,7 +366,7 @@ class MessageHubTests extends TestHelpers
     */
   it should "invoke nodejs 6 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
-    val name = "messageHubNode"
+    val name = "messageHubNode6"
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs6kind))
@@ -379,7 +379,7 @@ class MessageHubTests extends TestHelpers
 
   it should "invoke nodejs 6 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
-    val name = "messageHubNode"
+    val name = "messageHubNode6-2"
     val file = Some(new File(nodejs6folder, "process-message.js").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -398,7 +398,7 @@ class MessageHubTests extends TestHelpers
     */
   it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
-    val name = "messageHubNode"
+    val name = "messageHubNode8"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs8kind))
@@ -411,7 +411,7 @@ class MessageHubTests extends TestHelpers
 
   it should "invoke nodejs 8 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
-    val name = "messageHubNode"
+    val name = "messageHubNode8-2"
     val file = Some(new File(nodejs8folder, "process-message.js").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -442,7 +442,7 @@ class MessageHubTests extends TestHelpers
   }
   it should "invoke process-message.py without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
-    val name = "messageHubPython"
+    val name = "messageHubPython-2"
     val file = Some(new File(pythonfolder, "process-message.py").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -473,7 +473,7 @@ class MessageHubTests extends TestHelpers
   }
   it should "invoke process-message.php without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
-    val name = "messageHubPhp"
+    val name = "messageHubPhp-2"
     val file = Some(new File(phpfolder, "process-message.php").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -505,7 +505,7 @@ class MessageHubTests extends TestHelpers
 
   it should "invoke process-message.swift without parameters and get an error" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
 
-    val name = "messageHubSwift"
+    val name = "messageHubSwift-2"
     val file = Some(new File(swiftfolder, "process-message.swift").toString());
 
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
