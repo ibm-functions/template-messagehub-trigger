@@ -68,6 +68,12 @@ class MessageHubTests extends TestHelpers
   val swiftfolder = "../runtimes/swift/actions";
   val swiftkind = "swift:3.1.1"
 
+  // params for messagehub actions
+  val catsArray = Map("cats" -> JsArray(JsObject(
+    "name" -> JsString("Kat"),
+    "color" -> JsString("Red"))))
+  val finalParam = Map("messages" -> JsArray(JsObject("value" -> JsObject(catsArray))))
+
   behavior of "MessageHub Template"
 
   // test to create the nodejs 8 messagehub trigger template from github url.  Will use preinstalled folder.
@@ -101,6 +107,16 @@ class MessageHubTests extends TestHelpers
     // confirm trigger exists
     val triggers = wsk.trigger.list()
     verifyTriggerList(triggers, triggerName);
+    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+
+    // confirm trigger will fire action with expected result
+    withActivation(wsk.activation, triggerRun) { activation =>
+      val logEntry = activation.logs.get(0).parseJson.asJsObject
+      val triggerActivationId: String = logEntry.getFields("activationId")(0).convertTo[String]
+      withActivation(wsk.activation, triggerActivationId) { triggerActivation =>
+        triggerActivation.response.result.get.toString should include regex """Red.*Kat"""
+      }
+    }
 
     // confirm rule exists
     val rules = wsk.rule.list()
@@ -148,6 +164,16 @@ class MessageHubTests extends TestHelpers
     // confirm trigger exists
     val triggers = wsk.trigger.list()
     verifyTriggerList(triggers, triggerName);
+    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+
+    // confirm trigger will fire action with expected result
+    withActivation(wsk.activation, triggerRun) { activation =>
+      val logEntry = activation.logs.get(0).parseJson.asJsObject
+      val triggerActivationId: String = logEntry.getFields("activationId")(0).convertTo[String]
+      withActivation(wsk.activation, triggerActivationId) { triggerActivation =>
+        triggerActivation.response.result.get.toString should include regex """Red.*Kat"""
+      }
+    }
 
     // confirm rule exists
     val rules = wsk.rule.list()
@@ -195,6 +221,16 @@ class MessageHubTests extends TestHelpers
     // confirm trigger exists
     val triggers = wsk.trigger.list()
     verifyTriggerList(triggers, triggerName);
+    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+
+    // confirm trigger will fire action with expected result
+    withActivation(wsk.activation, triggerRun) { activation =>
+      val logEntry = activation.logs.get(0).parseJson.asJsObject
+      val triggerActivationId: String = logEntry.getFields("activationId")(0).convertTo[String]
+      withActivation(wsk.activation, triggerActivationId) { triggerActivation =>
+        triggerActivation.response.result.get.toString should include regex """Red.*Kat"""
+      }
+    }
 
     // confirm rule exists
     val rules = wsk.rule.list()
@@ -242,6 +278,16 @@ class MessageHubTests extends TestHelpers
     // confirm trigger exists
     val triggers = wsk.trigger.list()
     verifyTriggerList(triggers, triggerName);
+    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+
+    // confirm trigger will fire action with expected result
+    withActivation(wsk.activation, triggerRun) { activation =>
+      val logEntry = activation.logs.get(0).parseJson.asJsObject
+      val triggerActivationId: String = logEntry.getFields("activationId")(0).convertTo[String]
+      withActivation(wsk.activation, triggerActivationId) { triggerActivation =>
+        triggerActivation.response.result.get.toString should include regex """Red.*Kat"""
+      }
+    }
 
     // confirm rule exists
     val rules = wsk.rule.list()
@@ -289,6 +335,16 @@ class MessageHubTests extends TestHelpers
     // confirm trigger exists
     val triggers = wsk.trigger.list()
     verifyTriggerList(triggers, triggerName);
+    val triggerRun = wsk.trigger.fire(triggerName, finalParam)
+
+    // confirm trigger will fire action with expected result
+    withActivation(wsk.activation, triggerRun) { activation =>
+      val logEntry = activation.logs.get(0).parseJson.asJsObject
+      val triggerActivationId: String = logEntry.getFields("activationId")(0).convertTo[String]
+      withActivation(wsk.activation, triggerActivationId) { triggerActivation =>
+        triggerActivation.response.result.get.toString should include regex """Red.*Kat"""
+      }
+    }
 
     // confirm rule exists
     val rules = wsk.rule.list()
@@ -304,11 +360,6 @@ class MessageHubTests extends TestHelpers
     wsk.trigger.delete(triggerName)
     wsk.rule.delete(ruleName)
   }
-
-  val catsArray = Map("cats" -> JsArray(JsObject(
-    "name" -> JsString("Kat"),
-    "color" -> JsString("Red"))))
-  val finalParam = Map("messages" -> JsArray(JsObject("value" -> JsObject(catsArray))))
 
   /**
     * Test the nodejs 6 "messageHub trigger" template
