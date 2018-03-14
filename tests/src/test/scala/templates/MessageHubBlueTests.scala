@@ -27,7 +27,6 @@ import common.TestUtils.RunResult
 import com.jayway.restassured.RestAssured
 import com.jayway.restassured.config.SSLConfig
 import spray.json._
-import spray.json.DefaultJsonProtocol._
 
 @RunWith(classOf[JUnitRunner])
 class MessageHubBlueTests extends TestHelpers
@@ -213,34 +212,5 @@ class MessageHubBlueTests extends TestHelpers
         activation.response.success shouldBe false
         activation.response.result.get.toString should include("Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
-  }
-
-  private def makePostCallWithExpectedResult(params: JsObject, expectedResult: String, expectedCode: Int) = {
-    val response = RestAssured.given()
-      .contentType("application/json\r\n")
-      .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
-      .body(params.toString())
-      .post(deployActionURL)
-    assert(response.statusCode() == expectedCode)
-    response.body.asString should include(expectedResult)
-    response.body.asString.parseJson.asJsObject.getFields("activationId") should have length 1
-  }
-
-  private def verifyRuleList(ruleListResult: RunResult, ruleName: String) = {
-    val ruleList = ruleListResult.stdout
-    val listOutput = ruleList.lines
-    listOutput.find(_.contains(ruleName)).get should (include(ruleName) and include("active"))
-  }
-
-  private def verifyTriggerList(triggerListResult: RunResult, triggerName: String) = {
-    val triggerList = triggerListResult.stdout
-    val listOutput = triggerList.lines
-    listOutput.find(_.contains(triggerName)).get should include(triggerName)
-  }
-
-  private def verifyAction(action: RunResult, name: String, kindValue: JsString): Unit = {
-    val stdout = action.stdout
-    assert(stdout.startsWith(s"ok: got action $name\n"))
-    wsk.parseJsonString(stdout).fields("exec").asJsObject.fields("kind") shouldBe kindValue
   }
 }
