@@ -30,7 +30,7 @@ import spray.json._
 import spray.json.DefaultJsonProtocol._
 
 @RunWith(classOf[JUnitRunner])
-class MessageHubTests extends TestHelpers
+class MessageHubBlueTests extends TestHelpers
   with WskTestHelpers
   with BeforeAndAfterAll {
 
