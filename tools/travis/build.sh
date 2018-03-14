@@ -66,4 +66,5 @@ $WSK_CLI action create /whisk.system/messaging/messageHubFeed --copy /whisk.syst
 
 # Test
 cd $ROOTDIR/template-messagehub-trigger
-./gradlew :tests:test
+
+./gradlew tests:test -Dtest.single=MessageHubTests

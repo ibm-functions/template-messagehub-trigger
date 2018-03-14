@@ -23,6 +23,13 @@ dependencies {
     compile project(':whisktests').sourceSets.test.output
 }
 
+test {
+    filter {
+        //include specific method in any of the tests
+        include "**/MessageHubBlueTests.class"
+    }
+}
+
 tasks.withType(ScalaCompile) {
     scalaCompileOptions.additionalParameters = gradle.scala.compileFlags
 }
