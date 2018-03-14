@@ -9,7 +9,6 @@ repositories {
 }
 
 tasks.withType(Test) {
-    exclude '**/MessageHubTests.class'
     testLogging {
         events "passed", "skipped", "failed"
         showStandardStreams = true
@@ -22,6 +21,13 @@ dependencies {
     compile "org.scala-lang:scala-library:${gradle.scala.version}"
     compile project(':whisktests')
     compile project(':whisktests').sourceSets.test.output
+}
+
+test {
+    filter {
+        //include specific method in any of the tests
+        include "**/CloudantBlueTests.class"
+    }
 }
 
 tasks.withType(ScalaCompile) {
