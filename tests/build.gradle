@@ -26,7 +26,7 @@ dependencies {
 test {
     filter {
         //include specific method in any of the tests
-        include "**/CloudantBlueTests.class"
+        include "**/MessageHubBlueTests.class"
     }
 }
 
