@@ -23,9 +23,6 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.junit.JUnitRunner
 import common.{TestHelpers, Wsk, WskProps, WskTestHelpers}
 import java.io._
-import common.TestUtils.RunResult
-import com.jayway.restassured.RestAssured
-import com.jayway.restassured.config.SSLConfig
 import spray.json._
 
 @RunWith(classOf[JUnitRunner])
