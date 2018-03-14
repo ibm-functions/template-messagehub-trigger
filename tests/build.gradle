@@ -9,6 +9,7 @@ repositories {
 }
 
 tasks.withType(Test) {
+    exclude '**/MessageHubTests.class'
     testLogging {
         events "passed", "skipped", "failed"
         showStandardStreams = true
