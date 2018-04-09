@@ -17,31 +17,30 @@
 #   TRIGGER_NAME
 #   RULE_NAME
 
-project:
+packages:
   namespace: _
-  packages:
-    $PACKAGE_NAME:
-      version: 1.0
-      license: Apache-2.0
-      dependencies:
-        openwhisk-messagehub:
-          location: /whisk.system/messaging
-          inputs:
-            kafka_brokers_sasl: $KAFKA_BROKERS
-            user: $MESSAGEHUB_USER
-            password: $MESSAGEHUB_PASS
-            kafka_admin_url: $KAFKA_ADMIN_URL
-      actions:
-        process-message:
-          function: actions/process-message.js
-          runtime: nodejs:6
-      triggers:
-        $TRIGGER_NAME:
-          feed: openwhisk-messagehub/messageHubFeed
-          inputs:
-            isJSONData: true
-            topic: $KAFKA_TOPIC
-      rules:
-          $RULE_NAME:
-            trigger: $TRIGGER_NAME
-            action: process-message
+  $PACKAGE_NAME:
+    version: 1.0
+    license: Apache-2.0
+    dependencies:
+      openwhisk-messagehub:
+        location: /whisk.system/messaging
+        inputs:
+          kafka_brokers_sasl: $KAFKA_BROKERS
+          user: $MESSAGEHUB_USER
+          password: $MESSAGEHUB_PASS
+          kafka_admin_url: $KAFKA_ADMIN_URL
+    actions:
+      process-message:
+        function: actions/process-message.js
+        runtime: nodejs:6
+    triggers:
+      $TRIGGER_NAME:
+        feed: openwhisk-messagehub/messageHubFeed
+        inputs:
+          isJSONData: true
+          topic: $KAFKA_TOPIC
+    rules:
+        $RULE_NAME:
+          trigger: $TRIGGER_NAME
+          action: process-message
