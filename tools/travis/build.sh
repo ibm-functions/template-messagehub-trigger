@@ -15,7 +15,12 @@ cd $WHISKDIR
 tools/build/scanCode.py "$SCRIPTDIR/../.."
 
 # Build Openwhisk
-./gradlew distDocker -PdockerImagePrefix=${IMAGE_PREFIX}
+TERM=dumb ./gradlew \
+:common:scala:install \
+:core:controller:install \
+:core:invoker:install \
+:tests:install \
+distDocker -PdockerImagePrefix=${IMAGE_PREFIX}
 
 docker pull ibmfunctions/action-nodejs-v8
 docker tag ibmfunctions/action-nodejs-v8 ${IMAGE_PREFIX}/action-nodejs-v8
