@@ -2,9 +2,9 @@
 
 sudo: required
 
-language: scala
-scala:
-   - 2.11.6
+language:
+  - scala
+  - node_js
 
 services:
   - docker
@@ -20,6 +20,7 @@ install: true
 
 before_install:
   - ./tools/travis/setup.sh
+  - ./tools/travis/scan.sh
 
 script:
-  - ./tools/travis/build.sh
+  - "./tools/travis/build.sh && ./tools/travis/deploy.sh && ./tools/travis/deploy_wskdeploy.sh && ./tools/travis/test.sh"
