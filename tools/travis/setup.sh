@@ -12,7 +12,7 @@ export OPENWHISK_HOME=${OPENWHISK_HOME:=$WHISKDIR}
 cd ${HOMEDIR}
 
 # shallow clone OpenWhisk repo.
-git clone --depth=1 --single-branch -b scala-2-12 https://github.com/chetanmeh/incubator-openwhisk.git ${OPENWHISK_HOME}
+git clone --depth 1 https://github.com/apache/incubator-openwhisk ${OPENWHISK_HOME}
 
 # shallow clone deploy package repo.
 git clone --depth 1 https://github.com/apache/incubator-openwhisk-package-deploy
