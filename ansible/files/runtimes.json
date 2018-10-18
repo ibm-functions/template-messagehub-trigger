@@ -2,129 +2,136 @@
     "runtimes": {
         "nodejs": [
             {
-                "kind": "nodejs",
-                "image": {
-                    "name": "nodejsaction"
-                },
-                "deprecated": true
-            },
-            {
                 "kind": "nodejs:6",
                 "default": true,
                 "image": {
-                    "name": "nodejs6action"
+                    "name": "nodejs6action",
+                    "prefix": "openwhisk",
+                    "tag": "latest"
                 },
-                "deprecated": false
+                "deprecated": false,
+                "stemCells": [
+                    {
+                        "count": 2,
+                        "memory": "256 MB"
+                    }
+                ],
+                "attached": {
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
+                }
             },
             {
                 "kind": "nodejs:8",
                 "default": false,
                 "image": {
-                  "name": "action-nodejs-v8",
-                  "prefix": "ibmfunctions",
-                  "tag":"latest"
+                    "name": "action-nodejs-v8",
+                    "prefix": "ibmfunctions",
+                    "tag": "latest"
                 },
-                "deprecated": false
+                "deprecated": false,
+                "attached": {
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
+                }
             }
         ],
         "python": [
             {
-                "kind": "python",
-                "image": {
-                    "name": "python2action"
-                },
-                "deprecated": false
-            },
-            {
-                "kind": "python:2",
-                "default": true,
-                "image": {
-                    "name": "python2action"
-                },
-                "deprecated": false
-            },
-            {
-                "kind": "python:3",
-                "image": {
-                    "name": "python3action"
-                },
-                "deprecated": false
-            },
-            {
                 "kind": "python-jessie:3",
                 "default": false,
                 "image": {
-                    "name": "action-python-v3",
+                    "name": "action-python-v3.6",
                     "prefix": "ibmfunctions",
-                    "tag":"latest"
+                    "tag": "latest"
                 },
-                "deprecated": false
+                "deprecated": false,
+                "attached": {
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
+                }
+            },
+            {
+                "kind": "python:3.6",
+                "default": false,
+                "image": {
+                    "name": "action-python-v3.6",
+                    "prefix": "ibmfunctions",
+                    "tag": "latest"
+                },
+                "deprecated": false,
+                "attached": {
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
+                }
+            },
+            {
+                "kind": "python:3.7",
+                "default": true,
+                "image": {
+                    "name": "action-python-v3.7",
+                    "prefix": "ibmfunctions",
+                    "tag": "latest"
+                },
+                "deprecated": false,
+                "attached": {
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
+                }
             }
         ],
         "swift": [
             {
-                "kind": "swift",
-                "image": {
-                    "name": "swiftaction"
-                },
-                "deprecated": true
-            },
-            {
-                "kind": "swift:3",
-                "image": {
-                    "name": "swift3action"
-                },
-                "deprecated": true
-            },
-            {
-                "kind": "swift:3.1.1",
-                "default": true,
-                "image": {
-                    "name": "action-swift-v3.1.1"
-                },
-                "deprecated": false
-            },
-            {
                 "kind": "swift:4.1",
-                "default": false,
+                "default": true,
                 "image": {
                     "name": "action-swift-v4.1",
                     "prefix": "ibmfunctions",
-                    "tag":"latest"
-                },
-                "deprecated": false
-            }
-        ],
-        "java": [
-            {
-                "kind": "java",
-                "default": true,
-                "image": {
-                    "name": "java8action"
+                    "tag": "latest"
                 },
                 "deprecated": false,
                 "attached": {
-                    "attachmentName": "jarfile",
-                    "attachmentType": "application/java-archive"
-                },
-                "sentinelledLogs": false,
-                "requireMain": true
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
+                }
             }
         ],
         "php": [
             {
                 "kind": "php:7.1",
+                "default": false,
+                "deprecated": false,
+                "image": {
+                    "name": "action-php-v7.1",
+                    "prefix": "openwhisk",
+                    "tag": "latest"
+                },
+                "attached": {
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
+                }
+            },
+            {
+                "kind": "php:7.2",
                 "default": true,
                 "deprecated": false,
                 "image": {
-                    "name": "action-php-v7.1"
+                    "name": "action-php-v7.2",
+                    "prefix": "openwhisk",
+                    "tag": "latest"
+                },
+                "attached": {
+                    "attachmentName": "codefile",
+                    "attachmentType": "text/plain"
                 }
             }
         ]
     },
     "blackboxes": [
         {
-            "name": "dockerskeleton"
+            "name": "dockerskeleton",
+            "prefix": "openwhisk",
+            "tag": "latest"
         }
     ]
 }

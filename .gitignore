@@ -1,10 +1,19 @@
 # Tests
 /tests/build
 /tests/out
+/tests/bin
 
 # Gradle
 .gradle
 
 # IntelliJ
-*.iml 
-*.idea/
+*.iml
+*.idea
+
+#Eclipse
+.project
+.settings
+.classpath
+
+credentials.json
+
