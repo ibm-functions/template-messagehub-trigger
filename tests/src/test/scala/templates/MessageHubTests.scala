@@ -57,10 +57,10 @@ class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfte
   val nodejs6kind = "nodejs:6"
   val phpRuntimePath = "runtimes/php"
   val phpfolder = "runtimes/php/actions";
-  val phpkind = "php:7.1"
+  val phpkind = "php:7.2"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "runtimes/python/actions";
-  val pythonkind = "python-jessie:3"
+  val pythonkind = "python:3.7"
   val swiftRuntimePath = "runtimes/swift"
   val swiftfolder = "runtimes/swift/actions";
   val swiftkind = "swift:4.1"
