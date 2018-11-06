@@ -23,17 +23,17 @@
       "type": "swift",
     },
     {
-      "name": "Python 3.6.4",
-      "kind": "python-jessie:3",
+      "name": "Python 3.7",
+      "kind": "python:3.7",
       "type": "python",
     },
     {
-      "name": "PHP 7.1",
-      "kind": "php:7.1",
-      "type": "php",
-    },
+      "name": "PHP 7.2",
+      "kind": "php:7.2",
+      "type": "php"
+    }
   ],
   "categories": [
-    "messagehub",
+    "messagehub"
   ],
 }
