@@ -8,18 +8,13 @@
   "commit": "74e09e77e3200be32746ec8668d97d88cebc55ff",
   "runtimes": [
     {
-      "name": "Node.js 8",
-      "kind": "nodejs:8",
+      "name": "Node.js 10",
+      "kind": "nodejs:10",
       "type": "nodejs",
     },
     {
-      "name": "Node.js 6",
-      "kind": "nodejs:6",
-      "type": "nodejs-6",
-    },
-    {
-      "name": "Swift 4.1",
-      "kind": "swift:4.1",
+      "name": "Swift 4.2",
+      "kind": "swift:4.2",
       "type": "swift",
     },
     {
@@ -28,8 +23,8 @@
       "type": "python",
     },
     {
-      "name": "PHP 7.2",
-      "kind": "php:7.2",
+      "name": "PHP 7.3",
+      "kind": "php:7.3",
       "type": "php"
     }
   ],

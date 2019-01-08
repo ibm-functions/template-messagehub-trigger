@@ -31,16 +31,14 @@ class MessageHubBlueTests extends TestHelpers with WskTestHelpers with BeforeAnd
   val wsk = new Wsk()
 
   //set parameters for deploy tests
-  val nodejs8folder = "runtimes/nodejs/actions";
-  val nodejs8kind = "nodejs:8"
-  val nodejs6folder = "runtimes/nodejs-6/actions";
-  val nodejs6kind = "nodejs:6"
+  val nodejsfolder = "runtimes/nodejs/actions";
+  val nodejskind = "nodejs:10"
   val phpfolder = "runtimes/php/actions";
-  val phpkind = "php:7.2"
+  val phpkind = "php:7.3"
   val pythonfolder = "runtimes/python/actions";
   val pythonkind = "python:3.7"
   val swiftfolder = "runtimes/swift/actions";
-  val swiftkind = "swift:4.1"
+  val swiftkind = "swift:4.2"
 
   // params for messagehub actions
   val catsArray = Map("cats" -> JsArray(JsObject("name" -> JsString("Kat"), "color" -> JsString("Red"))))
@@ -49,62 +47,30 @@ class MessageHubBlueTests extends TestHelpers with WskTestHelpers with BeforeAnd
   behavior of "MessageHub Template"
 
   /**
-   * Test the nodejs 6 "messageHub trigger" template
+   * Test the nodejs 10 "messageHub trigger" template
    */
-  it should "invoke nodejs 6 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val timestamp: String = System.currentTimeMillis.toString
-    val name = "messageHubNode6" + timestamp
-    val file = Some(new File(nodejs6folder, "process-message.js").toString());
-    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs6kind))
-    }
-
-    withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
-      _.response.result.get.toString should include regex """Red.*Kat"""
-    }
-  }
-
-  it should "invoke nodejs 6 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) {
-    (wp, assetHelper) =>
-      val timestamp: String = System.currentTimeMillis.toString
-      val name = "messageHubNode6" + timestamp
-      val file = Some(new File(nodejs6folder, "process-message.js").toString());
-
-      assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-        action.create(name, file, kind = Some(nodejs6kind))
-      }
-
-      withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
-        activation.response.success shouldBe false
-        activation.response.result.get.toString should include(
-          "Invalid arguments. Must include 'messages' JSON array with 'value' field")
-      }
-  }
-
-  /**
-   * Test the nodejs 8 "messageHub trigger" template
-   */
-  it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val timestamp: String = System.currentTimeMillis.toString
-    val name = "messageHubNode8" + timestamp
-    val file = Some(new File(nodejs8folder, "process-message.js").toString());
-    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs8kind))
-    }
-
-    withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
-      _.response.result.get.toString should include regex """Red.*Kat"""
-    }
-  }
-
-  it should "invoke nodejs 8 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) {
+  it should "invoke nodejs 10 process-message.js and get the result" in withAssetCleaner(wskprops) {
     (wp, assetHelper) =>
       val timestamp: String = System.currentTimeMillis.toString
       val name = "messageHubNode8" + timestamp
-      val file = Some(new File(nodejs8folder, "process-message.js").toString());
+      val file = Some(new File(nodejsfolder, "process-message.js").toString());
+      assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+        action.create(name, file, kind = Some(nodejskind))
+      }
+
+      withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
+        _.response.result.get.toString should include regex """Red.*Kat"""
+      }
+  }
+
+  it should "invoke nodejs 10 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) {
+    (wp, assetHelper) =>
+      val timestamp: String = System.currentTimeMillis.toString
+      val name = "messageHubNode8" + timestamp
+      val file = Some(new File(nodejsfolder, "process-message.js").toString());
 
       assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-        action.create(name, file, kind = Some(nodejs8kind))
+        action.create(name, file, kind = Some(nodejskind))
       }
 
       withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>

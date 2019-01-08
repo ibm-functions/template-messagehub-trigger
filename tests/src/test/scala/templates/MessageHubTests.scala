@@ -49,21 +49,18 @@ class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfte
   val binding = "openwhisk-messagehub"
 
   //set parameters for deploy tests
-  val node8RuntimePath = "runtimes/nodejs"
-  val nodejs8folder = "runtimes/nodejs/actions";
-  val nodejs8kind = "nodejs:8"
-  val node6RuntimePath = "runtimes/nodejs-6"
-  val nodejs6folder = "runtimes/nodejs-6/actions";
-  val nodejs6kind = "nodejs:6"
+  val nodejsRuntimePath = "runtimes/nodejs"
+  val nodejsfolder = "runtimes/nodejs/actions";
+  val nodejskind = "nodejs:10"
   val phpRuntimePath = "runtimes/php"
   val phpfolder = "runtimes/php/actions";
-  val phpkind = "php:7.2"
+  val phpkind = "php:7.3"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "runtimes/python/actions";
   val pythonkind = "python:3.7"
   val swiftRuntimePath = "runtimes/swift"
   val swiftfolder = "runtimes/swift/actions";
-  val swiftkind = "swift:4.1"
+  val swiftkind = "swift:4.2"
 
   // params for messagehub actions
   val catsArray = Map("cats" -> JsArray(JsObject("name" -> JsString("Kat"), "color" -> JsString("Red"))))
@@ -71,28 +68,28 @@ class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfte
 
   behavior of "MessageHub Template"
 
-  // test to create the nodejs 8 messagehub trigger template from github url.  Will use preinstalled folder.
-  it should "create the nodejs 8 messagehub trigger action from github url" in {
+  // test to create the nodejs 10 messagehub trigger template from github url.  Will use preinstalled folder.
+  it should "create the nodejs 10 messagehub trigger action from github url" in {
     // create unique asset names
     val timestamp: String = System.currentTimeMillis.toString
-    val nodejs8Package = packageName + timestamp
-    val nodejs8Trigger = triggerName + timestamp
-    val nodejs8Rule = ruleName + timestamp
-    val nodejs8MessagehubAction = nodejs8Package + "/" + messagehubAction
+    val nodejsPackage = packageName + timestamp
+    val nodejsTrigger = triggerName + timestamp
+    val nodejsRule = ruleName + timestamp
+    val nodejsMessagehubAction = nodejsPackage + "/" + messagehubAction
 
     makePostCallWithExpectedResult(
       JsObject(
         "gitUrl" -> JsString(deployTestRepo),
-        "manifestPath" -> JsString(node8RuntimePath),
+        "manifestPath" -> JsString(nodejsRuntimePath),
         "envData" -> JsObject(
-          "PACKAGE_NAME" -> JsString(nodejs8Package),
+          "PACKAGE_NAME" -> JsString(nodejsPackage),
           "KAFKA_BROKERS" -> JsString("brokers,list"),
           "MESSAGEHUB_USER" -> JsString("username"),
           "MESSAGEHUB_PASS" -> JsString("password"),
           "KAFKA_ADMIN_URL" -> JsString("admin_url"),
           "KAFKA_TOPIC" -> JsString("topic"),
-          "TRIGGER_NAME" -> JsString(nodejs8Trigger),
-          "RULE_NAME" -> JsString(nodejs8Rule)),
+          "TRIGGER_NAME" -> JsString(nodejsTrigger),
+          "RULE_NAME" -> JsString(nodejsRule)),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)),
       successStatus,
@@ -103,15 +100,15 @@ class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfte
       _.response.result.get.toString should include("echo")
     }
 
-    withActivation(wsk.activation, wsk.action.invoke(nodejs8MessagehubAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(nodejsMessagehubAction)) {
       _.response.result.get.toString should include(
         "Invalid arguments. Must include 'messages' JSON array with 'value' field")
     }
 
     // confirm trigger exists
     val triggers = wsk.trigger.list()
-    verifyTriggerList(triggers, nodejs8Trigger);
-    val triggerRun = wsk.trigger.fire(nodejs8Trigger, finalParam)
+    verifyTriggerList(triggers, nodejsTrigger);
+    val triggerRun = wsk.trigger.fire(nodejsTrigger, finalParam)
 
     // confirm trigger will fire action with expected result
     withActivation(wsk.activation, triggerRun) { activation =>
@@ -124,83 +121,17 @@ class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfte
 
     // confirm rule exists
     val rules = wsk.rule.list()
-    verifyRuleList(rules, nodejs8Rule)
+    verifyRuleList(rules, nodejsRule)
 
-    val action = wsk.action.get(nodejs8MessagehubAction)
-    verifyAction(action, nodejs8MessagehubAction, JsString(nodejs8kind))
-
-    // clean up after test
-    wsk.action.delete(nodejs8MessagehubAction)
-    wsk.pkg.delete(nodejs8Package)
-    wsk.pkg.delete(binding)
-    wsk.trigger.delete(nodejs8Trigger)
-    wsk.rule.delete(nodejs8Rule)
-  }
-
-  // test to create the nodejs 6 messagehub trigger template from github url.  Will use preinstalled folder.
-  it should "create the nodejs 6 messagehub trigger action from github url" in {
-    // create unique asset names
-    val timestamp: String = System.currentTimeMillis.toString
-    val nodejs6Package = packageName + timestamp
-    val nodejs6Trigger = triggerName + timestamp
-    val nodejs6Rule = ruleName + timestamp
-    val nodejs6MessagehubAction = nodejs6Package + "/" + messagehubAction
-
-    makePostCallWithExpectedResult(
-      JsObject(
-        "gitUrl" -> JsString(deployTestRepo),
-        "manifestPath" -> JsString(node6RuntimePath),
-        "envData" -> JsObject(
-          "PACKAGE_NAME" -> JsString(nodejs6Package),
-          "KAFKA_BROKERS" -> JsString("brokers,list"),
-          "MESSAGEHUB_USER" -> JsString("username"),
-          "MESSAGEHUB_PASS" -> JsString("password"),
-          "KAFKA_ADMIN_URL" -> JsString("admin_url"),
-          "KAFKA_TOPIC" -> JsString("topic"),
-          "TRIGGER_NAME" -> JsString(nodejs6Trigger),
-          "RULE_NAME" -> JsString(nodejs6Rule)),
-        "wskApiHost" -> JsString(wskprops.apihost),
-        "wskAuth" -> JsString(wskprops.authKey)),
-      successStatus,
-      200);
-
-    // check that the actions were created and can be invoked with expected results
-    withActivation(wsk.activation, wsk.action.invoke(fakeMessageHubAction, Map("message" -> "echo".toJson))) {
-      _.response.result.get.toString should include("echo")
-    }
-
-    withActivation(wsk.activation, wsk.action.invoke(nodejs6MessagehubAction)) {
-      _.response.result.get.toString should include(
-        "Invalid arguments. Must include 'messages' JSON array with 'value' field")
-    }
-
-    // confirm trigger exists
-    val triggers = wsk.trigger.list()
-    verifyTriggerList(triggers, nodejs6Trigger);
-    val triggerRun = wsk.trigger.fire(nodejs6Trigger, finalParam)
-
-    // confirm trigger will fire action with expected result
-    withActivation(wsk.activation, triggerRun) { activation =>
-      val logEntry = activation.logs.get(0).parseJson.asJsObject
-      val triggerActivationId: String = logEntry.getFields("activationId")(0).convertTo[String]
-      withActivation(wsk.activation, triggerActivationId) { triggerActivation =>
-        triggerActivation.response.result.get.toString should include regex """Red.*Kat"""
-      }
-    }
-
-    // confirm rule exists
-    val rules = wsk.rule.list()
-    verifyRuleList(rules, nodejs6Rule)
-
-    val action = wsk.action.get(nodejs6MessagehubAction)
-    verifyAction(action, nodejs6MessagehubAction, JsString(nodejs6kind))
+    val action = wsk.action.get(nodejsMessagehubAction)
+    verifyAction(action, nodejsMessagehubAction, JsString(nodejskind))
 
     // clean up after test
-    wsk.action.delete(nodejs6MessagehubAction)
-    wsk.pkg.delete(nodejs6Package)
+    wsk.action.delete(nodejsMessagehubAction)
+    wsk.pkg.delete(nodejsPackage)
     wsk.pkg.delete(binding)
-    wsk.trigger.delete(nodejs6Trigger)
-    wsk.rule.delete(nodejs6Rule)
+    wsk.trigger.delete(nodejsTrigger)
+    wsk.rule.delete(nodejsRule)
   }
 
   // test to create the php messagehub trigger template from github url.  Will use preinstalled folder.
@@ -402,62 +333,30 @@ class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfte
   }
 
   /**
-   * Test the nodejs 6 "messageHub trigger" template
+   * Test the nodejs 10 "messageHub trigger" template
    */
-  it should "invoke nodejs 6 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val timestamp: String = System.currentTimeMillis.toString
-    val name = "messageHubNode6" + timestamp
-    val file = Some(new File(nodejs6folder, "process-message.js").toString());
-    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs6kind))
-    }
-
-    withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
-      _.response.result.get.toString should include regex """Red.*Kat"""
-    }
-  }
-
-  it should "invoke nodejs 6 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) {
+  it should "invoke nodejs 10 process-message.js and get the result" in withAssetCleaner(wskprops) {
     (wp, assetHelper) =>
       val timestamp: String = System.currentTimeMillis.toString
-      val name = "messageHubNode6" + timestamp
-      val file = Some(new File(nodejs6folder, "process-message.js").toString());
-
+      val name = "messageHubNodeJS" + timestamp
+      val file = Some(new File(nodejsfolder, "process-message.js").toString());
       assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-        action.create(name, file, kind = Some(nodejs6kind))
+        action.create(name, file, kind = Some(nodejskind))
       }
 
-      withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
-        activation.response.success shouldBe false
-        activation.response.result.get.toString should include(
-          "Invalid arguments. Must include 'messages' JSON array with 'value' field")
+      withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
+        _.response.result.get.toString should include regex """Red.*Kat"""
       }
   }
 
-  /**
-   * Test the nodejs 8 "messageHub trigger" template
-   */
-  it should "invoke nodejs 8 process-message.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val timestamp: String = System.currentTimeMillis.toString
-    val name = "messageHubNode8" + timestamp
-    val file = Some(new File(nodejs8folder, "process-message.js").toString());
-    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs8kind))
-    }
-
-    withActivation(wsk.activation, wsk.action.invoke(name, finalParam)) {
-      _.response.result.get.toString should include regex """Red.*Kat"""
-    }
-  }
-
-  it should "invoke nodejs 8 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) {
+  it should "invoke nodejs 10 process-message.js without parameters and get an error" in withAssetCleaner(wskprops) {
     (wp, assetHelper) =>
       val timestamp: String = System.currentTimeMillis.toString
-      val name = "messageHubNode8" + timestamp
-      val file = Some(new File(nodejs8folder, "process-message.js").toString());
+      val name = "messageHubNodeJS" + timestamp
+      val file = Some(new File(nodejsfolder, "process-message.js").toString());
 
       assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-        action.create(name, file, kind = Some(nodejs8kind))
+        action.create(name, file, kind = Some(nodejskind))
       }
 
       withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>

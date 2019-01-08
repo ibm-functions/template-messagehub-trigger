@@ -34,7 +34,7 @@ project:
       actions:
         process-message:
           function: actions/process-message.php
-          runtime: php:7.2
+          runtime: php:7.3
       triggers:
         $TRIGGER_NAME:
           feed: openwhisk-messagehub/messageHubFeed
