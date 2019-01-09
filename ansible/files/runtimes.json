@@ -2,30 +2,10 @@
     "runtimes": {
         "nodejs": [
             {
-                "kind": "nodejs:6",
+                "kind": "nodejs:10",
                 "default": true,
                 "image": {
-                    "name": "nodejs6action",
-                    "prefix": "openwhisk",
-                    "tag": "latest"
-                },
-                "deprecated": false,
-                "stemCells": [
-                    {
-                        "count": 2,
-                        "memory": "256 MB"
-                    }
-                ],
-                "attached": {
-                    "attachmentName": "codefile",
-                    "attachmentType": "text/plain"
-                }
-            },
-            {
-                "kind": "nodejs:8",
-                "default": false,
-                "image": {
-                    "name": "action-nodejs-v8",
+                    "name": "action-nodejs-v10",
                     "prefix": "ibmfunctions",
                     "tag": "latest"
                 },
@@ -54,10 +34,10 @@
         ],
         "swift": [
             {
-                "kind": "swift:4.1",
+                "kind": "swift:4.2",
                 "default": true,
                 "image": {
-                    "name": "action-swift-v4.1",
+                    "name": "action-swift-v4.2",
                     "prefix": "ibmfunctions",
                     "tag": "latest"
                 },
@@ -70,11 +50,11 @@
         ],
         "php": [
             {
-                "kind": "php:7.2",
+                "kind": "php:7.3",
                 "default": true,
                 "deprecated": false,
                 "image": {
-                    "name": "action-php-v7.2",
+                    "name": "action-php-v7.3",
                     "prefix": "openwhisk",
                     "tag": "latest"
                 },
