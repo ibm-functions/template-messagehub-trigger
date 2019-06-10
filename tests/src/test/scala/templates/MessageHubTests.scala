@@ -17,16 +17,17 @@
 
 package packages
 
+import java.io._
+
+import common.TestUtils.RunResult
+import common.{TestHelpers, Wsk, WskProps, WskTestHelpers}
+import io.restassured.RestAssured
+import io.restassured.config.SSLConfig
 import org.junit.runner.RunWith
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.junit.JUnitRunner
-import common.{TestHelpers, Wsk, WskProps, WskTestHelpers}
-import java.io._
-import common.TestUtils.RunResult
-import com.jayway.restassured.RestAssured
-import com.jayway.restassured.config.SSLConfig
-import spray.json._
 import spray.json.DefaultJsonProtocol._
+import spray.json._
 
 @RunWith(classOf[JUnitRunner])
 class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfterAll {
