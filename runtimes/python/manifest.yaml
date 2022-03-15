@@ -34,7 +34,7 @@ project:
       actions:
         process-message:
           function: actions/process-message.py
-          runtime: python:3.7
+          runtime: python:3.9
       triggers:
         $TRIGGER_NAME:
           feed: openwhisk-messagehub/messageHubFeed
