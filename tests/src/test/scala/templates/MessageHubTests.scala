@@ -52,13 +52,13 @@ class MessageHubTests extends TestHelpers with WskTestHelpers with BeforeAndAfte
   //set parameters for deploy tests
   val nodejsRuntimePath = "runtimes/nodejs"
   val nodejsfolder = "runtimes/nodejs/actions";
-  val nodejskind = "nodejs:10"
+  val nodejskind = "nodejs:12"
   val phpRuntimePath = "runtimes/php"
   val phpfolder = "runtimes/php/actions";
-  val phpkind = "php:7.3"
+  val phpkind = "php:7.4"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "runtimes/python/actions";
-  val pythonkind = "python:3.7"
+  val pythonkind = "python:3.9"
   val swiftRuntimePath = "runtimes/swift"
   val swiftfolder = "runtimes/swift/actions";
   val swiftkind = "swift:4.2"

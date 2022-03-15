@@ -32,11 +32,11 @@ class MessageHubBlueTests extends TestHelpers with WskTestHelpers with BeforeAnd
 
   //set parameters for deploy tests
   val nodejsfolder = "runtimes/nodejs/actions";
-  val nodejskind = "nodejs:10"
+  val nodejskind = "nodejs:12"
   val phpfolder = "runtimes/php/actions";
-  val phpkind = "php:7.3"
+  val phpkind = "php:7.4"
   val pythonfolder = "runtimes/python/actions";
-  val pythonkind = "python:3.7"
+  val pythonkind = "python:3.9"
   val swiftfolder = "runtimes/swift/actions";
   val swiftkind = "swift:4.2"
 
